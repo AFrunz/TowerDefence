@@ -26,3 +26,7 @@ Enemy* Lair::releaseEnemy(int time) {
     return nullptr;
 }
 
+bool Lair::hasEnemies() {
+    return !timetable.empty();
+}
+

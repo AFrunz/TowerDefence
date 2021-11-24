@@ -6,7 +6,7 @@
 
 
 ///Враг
-class Enemy: public Building{
+class Enemy{
 
 private:
     int x, y;                   /// Координаты
@@ -23,17 +23,19 @@ public:
     Enemy();
     Enemy(std::string name_, int maxHp_, int gold_, int speed_, int x_, int y_);
     // Селекторы
+    int getX() const{return x;};
+    int getY() const{return y;};
+    void move(int x_, int y_);
     std::string getName() const;
     int getMaxHp() const;
     int getCurrentHp() const;
     int getGold() const;
     int getSpeed() const;
-    void makeMove();            /// Сделать ход
-    int reduceHp();            /// Получить урон
-    int addSpell();             /// Добавить эффект
+    void reduceHp(int damage);            /// Получить урон
+    void addSpell(Spell* spell);             /// Добавить эффект
     void setDirection(int direction);
-    int getDirection();
-    int getType();
+    int getDirection() const;
+    virtual ~Enemy() = default;
 };
 
 

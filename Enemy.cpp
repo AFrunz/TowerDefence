@@ -35,12 +35,23 @@ int Enemy::getSpeed() const {
     return speed;
 }
 
-void Enemy::makeMove() {
-
+void Enemy::reduceHp(int damage) {
+    currentHp -= damage;
 }
 
-int Enemy::reduceHp() {
-    return 0;
+void Enemy::move(int x_, int y_) {
+    if (x < 0 || y < 0) throw std::runtime_error("Wrong cords\n");
+    x = x_;
+    y = y_;
+}
+
+
+void Enemy::setDirection(int direction_) {
+    direction = direction_;
+}
+
+int Enemy::getDirection() const{
+    return direction;
 }
 
 

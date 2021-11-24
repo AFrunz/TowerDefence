@@ -20,6 +20,8 @@ private:
 public:
     Lair();
     Enemy* releaseEnemy(int time);             // Возможно добавить ландшафт в список параметров
+    bool hasEnemies();
+    virtual ~Lair() = default;
 };
 
 #endif //TOWERDEFENCE_LAIR_HPP
