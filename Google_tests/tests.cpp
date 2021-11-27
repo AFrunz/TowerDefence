@@ -3,6 +3,7 @@
 #include "Castle.hpp"
 #include "Spell.hpp"
 #include "Enemy.hpp"
+#include "Tower.hpp"
 #include "Trap.hpp"
 
 /// Castle
@@ -134,8 +135,74 @@ TEST(Trap, getters){
 
     EXPECT_EQ(4, trap.getType());
     EXPECT_EQ(3, trap.getArea());
+}
 
 
+//TEST(Trap, modificators){
+//    DebilitationSpell spell(12, 1);
+//    Trap trap(&spell, 3);
+//    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
+//    trap.hit(&enemy);
+//    EXPECT_EQ(1, enemy.getX());
+//    EXPECT_EQ(3, enemy.getY());
+//    EXPECT_EQ(10, enemy.getGold());
+//    EXPECT_EQ(100, enemy.getCurrentHp());
+//    EXPECT_EQ(100, enemy.getMaxHp());
+//    EXPECT_EQ(1, enemy.getDirection());
+//    EXPECT_EQ("MyEnemy", enemy.getName());
+//    EXPECT_EQ(15, enemy.getSpeed());
+//}
+
+
+/// Tower
+
+TEST(BaseTower, allMethods){
+    BaseTower tower;
+    EXPECT_EQ(0, tower.getLvl());
+    EXPECT_EQ(2, tower.getType());
+    EXPECT_EQ(BaseTowerLVL[0].radius, tower.getArea());
+    tower.lvlUp();
+    EXPECT_EQ(1, tower.getLvl());
+    EXPECT_EQ(BaseTowerLVL[1].radius, tower.getArea());
+    EXPECT_EQ(2, tower.getType());
+    tower.lvlUp();
+    EXPECT_EQ(2, tower.getLvl());
+    EXPECT_EQ(BaseTowerLVL[2].radius, tower.getArea());
+    EXPECT_EQ(2, tower.getType());
+    tower.lvlUp();
+    EXPECT_EQ(2, tower.getLvl());
+    EXPECT_EQ(BaseTowerLVL[2].radius, tower.getArea());
+    EXPECT_EQ(2, tower.getType());
+    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
+    tower.hit(&enemy);
+    EXPECT_EQ(100 - BaseTowerLVL[2].damage, enemy.getCurrentHp());
+    EXPECT_EQ(100, enemy.getMaxHp());
+
+
+}
+
+
+TEST(MagicTower, allMethods){
+    MagicTower tower;
+    EXPECT_EQ(0, tower.getLvl());
+    EXPECT_EQ(2, tower.getType());
+    EXPECT_EQ(MagicTowerLVL[0].radius, tower.getArea());
+    tower.lvlUp();
+    EXPECT_EQ(1, tower.getLvl());
+    EXPECT_EQ(MagicTowerLVL[1].radius, tower.getArea());
+    EXPECT_EQ(2, tower.getType());
+    tower.lvlUp();
+    EXPECT_EQ(2, tower.getLvl());
+    EXPECT_EQ(MagicTowerLVL[2].radius, tower.getArea());
+    EXPECT_EQ(2, tower.getType());
+    tower.lvlUp();
+    EXPECT_EQ(2, tower.getLvl());
+    EXPECT_EQ(MagicTowerLVL[2].radius, tower.getArea());
+    EXPECT_EQ(2, tower.getType());
+    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
+    tower.hit(&enemy);
+    EXPECT_EQ(100 - MagicTowerLVL[2].damage, enemy.getCurrentHp());
+    EXPECT_EQ(100, enemy.getMaxHp());
 }
 
 
@@ -160,10 +227,6 @@ TEST(Trap, getters){
 //TEST(Castle, getgold){
 //
 //}
-
-
-
-
 
 
 int main(int argc, char* argv[]){

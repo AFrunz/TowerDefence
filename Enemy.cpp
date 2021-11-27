@@ -50,3 +50,7 @@ void Enemy::move(int x_, int y_, int direction_) {
 int Enemy::getDirection() const{
     return direction;
 }
+//////////////////////////////////////////////
+void Enemy::addSpell(Spell *spell) {
+
+}

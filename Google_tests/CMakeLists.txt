@@ -12,6 +12,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 include_directories(${SOURCE}/headers)
 message(${gtest_SOURCE_DIR})
 # 'Google_Tests_run' is the target name
-add_executable(Google_Tests_run tests.cpp ${SOURCE}/Castle.cpp ${SOURCE}/Enemy.cpp ${SOURCE}/Spell.cpp ${SOURCE}/Lair.cpp)
+add_executable(Google_Tests_run tests.cpp ${SOURCE}/Castle.cpp ${SOURCE}/Enemy.cpp ${SOURCE}/Spell.cpp ${SOURCE}/Lair.cpp
+        ${SOURCE}/Trap.cpp ${SOURCE}/Tower.cpp)
 #${SOURCE}/lab3/headers/sequence.hpp ${SOURCE}/lab3/sequence.cpp
 target_link_libraries(Google_Tests_run gtest gtest_main)

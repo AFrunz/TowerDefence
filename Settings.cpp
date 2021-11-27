@@ -8,7 +8,7 @@ public:
     int price;
 };
 
-
+const int MAX_LVL_OF_TOWER = 2;
 const TowerFeature TowerLVL[] = {{1, 1, 100}, {1, 2, 200}, {2, 3, 500}};
 
 
