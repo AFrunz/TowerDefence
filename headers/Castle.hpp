@@ -17,6 +17,7 @@ private:
 public:
     Castle();
     Castle(std::string name, int maxHealthPoint, int startGold);
+    int getType() const;
     int getGold() const;
     int getMaxHp() const;
     int getCurrentHp() const;

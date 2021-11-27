@@ -15,7 +15,7 @@ enum BuildingTypes{
 
 class Building{
 public:
-    virtual int getType() = 0;
+    virtual int getType() const = 0;
     virtual ~Building() = default;
 };
 

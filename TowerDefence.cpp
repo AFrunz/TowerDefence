@@ -18,3 +18,5 @@ void Timer::setTimeout(double t) {
 void Timer::setSpeed(double speed_) {
     speed = speed_;
 }
+
+

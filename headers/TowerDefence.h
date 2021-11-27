@@ -27,7 +27,6 @@ public:
         if (status == 0) return 0;
         this->startGame();
     }
-    int set
 
 };
 

@@ -4,38 +4,37 @@
 #include "Spell.hpp"
 #include "Building.hpp"
 #include "Enemy.hpp"
-
+#include "Settings.cpp"
 
 ///Башня
 class Tower:public Building{
 
 protected:
     int lvl;
+    TowerFeature features;
     // таблица характеристик // Отдельный класс??
 public:
     Tower();
     int getLvl() const;
     virtual int getArea() const;
-    virtual int lvlUp();
-    virtual int hit(Enemy* target);
+    virtual void lvlUp();
+    virtual int hit(Enemy* target) = 0;
 };
 
 class BaseTower:public Tower{
 
 public:
     BaseTower();
-    int lvlUp() override;
     int hit(Enemy* target);
 
 };
 
 class MagicTower:public Tower{
 private:
-    Spell towerSpell;
+    Spell* towerSpell;
 public:
     MagicTower();
-    int lvlUp() override;
-    int hit(Enemy* target);
+    int hit(Enemy* target) override;
 };
 
 

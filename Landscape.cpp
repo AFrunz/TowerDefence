@@ -81,7 +81,8 @@ bool Landscape::findRoad(int& x, int& y, int& direction) const{
     return flag;
 }
 
-// доделать
+// доделать:
+
 int Landscape::updateSituation(int time){
     Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
 

@@ -1,41 +1,43 @@
 #include "headers/Tower.hpp"
 
 
-Tower::Tower():lvl(0){}
+Tower::Tower():lvl(0){
+    features = TowerLVL[lvl];
+}
 
 int Tower::getLvl() const {
     return lvl;
 }
 
-int Tower::lvlUp() {
+void Tower::lvlUp() {
     lvl++;
-    //вызов новых характеристик
+    features = TowerLVL[lvl];
 }
 
-int Tower::hit(Enemy *target) {
+//int Tower::hit(Enemy *target) {
+//    if (!target) return -1;
+//    target->reduceHp(features.damage);
+//    return 0;
+//}
+
+int Tower::getArea() const {
+    return features.radius;
+}
+
+BaseTower::BaseTower():Tower(){}
+
+
+int BaseTower::hit(Enemy *target) {
+    if (!target) return -1;
+    target->reduceHp(features.damage);
     return 0;
 }
 
-BaseTower::BaseTower() {
-
-}
-
-int BaseTower::lvlUp() {
-    return Tower::lvlUp();
-}
-
-int BaseTower::hit(Enemy *target) {
-    return Tower::hit(target);
-}
-
-MagicTower::MagicTower() {
-
-}
-
-int MagicTower::lvlUp() {
-    return Tower::lvlUp();
-}
+MagicTower::MagicTower():Tower(){}
 
 int MagicTower::hit(Enemy *target) {
-    return Tower::hit(target);
+    if (!target) return -1;
+    target->reduceHp(features.damage);
+    target->addSpell(towerSpell);
+    return 0;
 }

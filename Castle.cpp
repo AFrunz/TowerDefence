@@ -18,6 +18,10 @@ int Castle::getGold() const {
     return gold;
 }
 
+int Castle::getType() const{
+    return 0;
+}
+
 int Castle::getMaxHp() const {
     return maxHp;
 }

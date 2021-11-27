@@ -1,8 +1,6 @@
 #ifndef TOWERDEFENCE_SPELL_HPP
 #define TOWERDEFENCE_SPELL_HPP
 #include <iostream>
-#include <map>
-#include <set>
 
 ///Эффект
 class Spell{
@@ -14,7 +12,7 @@ public:
     Spell();
     Spell(int time, int power);
 
-    virtual int getType() const;
+    virtual int getType() const = 0;
     int getTime() const;
     int getPower() const;
     int addTime(int t);         /// Добавление времени
@@ -28,7 +26,7 @@ class SlowingSpell:public Spell{
 public:
     SlowingSpell();
     SlowingSpell(int time, int power);
-    int getType() const;
+    virtual int getType() const;
 };
 
 ///Отравляющий эффект

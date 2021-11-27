@@ -1,13 +1,10 @@
 #include "headers/Spell.hpp"
 
+/// Global spell
 
 Spell::Spell():time(0), power(0) {}
 
 Spell::Spell(int time_, int power_):time(time_), power(power_) {}
-
-int Spell::getType() const {
-    return 0;
-}
 
 int Spell::getTime() const {
     return time;
@@ -17,13 +14,8 @@ int Spell::getPower() const {
     return power;
 }
 
-//int Spell::addTime(int t) {
-//    return 0;
-//}
-//
-//int Spell::addPower(int p) {
-//    return 0;
-//}
+
+/// Slowing Spell
 
 SlowingSpell::SlowingSpell():Spell(){}
 
@@ -33,6 +25,7 @@ int SlowingSpell::getType() const {
     return 1;
 }
 
+///Poisoning spell
 
 PoisoningSpell::PoisoningSpell():Spell() {}
 
@@ -41,6 +34,9 @@ PoisoningSpell::PoisoningSpell(int time, int power) : Spell(time, power) {}
 int PoisoningSpell::getType() const {
     return 2;
 }
+
+/// Debilitation spell
+
 
 DebilitationSpell::DebilitationSpell():Spell() {}
 
