@@ -19,14 +19,31 @@ Lair::Lair():timetable() {}
 Enemy* Lair::releaseEnemy(int time) {
     if (timetable.empty()) return nullptr;
     if (timetable.front().time == time){
-        Enemy &buf = timetable.front().enemy;
+        Enemy* buf = timetable.front().enemy;
         timetable.pop_front();
-        return &buf;
+        return buf;
     }
     return nullptr;
 }
 
-bool Lair::hasEnemies() {
+bool Lair::hasEnemies() const{
     return !timetable.empty();
+}
+
+int Lair::getType() const {
+    return 1;
+}
+
+void Lair::sort() {
+    auto itSt = timetable.begin();
+    auto itEn = timetable.end();
+    std::sort(itSt, itEn, [](EnemyTime& a, EnemyTime& b){
+        return a.time < b.time;
+    });
+}
+
+void Lair::pushEnemy(EnemyTime ceil) {
+    timetable.push_back(ceil);
+    sort();
 }
 

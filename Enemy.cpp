@@ -12,8 +12,8 @@
 
 Enemy::Enemy():x(-1), y(-1), direction(0), name(), maxHp(0), currentHp(0), gold(0), speed(0), spellList(){}
 
-Enemy::Enemy(std::string name_, int maxHp_, int gold_, int speed_, int x_, int y_, int direction_):name(name_), maxHp(maxHp_),
-gold(gold_), speed(speed_), x(x_), y(y_), spellList(), direction(direction_), currentHp(maxHp_){}
+Enemy::Enemy(std::string name_, int maxHp_, int gold_, int speed_):name(name_), maxHp(maxHp_),
+gold(gold_), speed(speed_), x(-1), y(-1), spellList(), direction(0), currentHp(maxHp_){}
 
 std::string Enemy::getName() const {
     return name;
@@ -40,7 +40,7 @@ void Enemy::reduceHp(int damage) {
 }
 
 void Enemy::move(int x_, int y_, int direction_) {
-    if (x < 0 || y < 0) throw std::runtime_error("Wrong cords\n");
+    if (x_ < 0 || y_ < 0) throw std::runtime_error("Wrong cords\n");
     x = x_;
     y = y_;
     direction = direction_;

@@ -1,10 +1,13 @@
+#include <fstream>
 #include "gtest//gtest.h"
 #include "Trap.hpp"
 #include "Castle.hpp"
 #include "Spell.hpp"
 #include "Enemy.hpp"
 #include "Tower.hpp"
-#include "Trap.hpp"
+#include "Lair.hpp"
+#include "TowerDefence.h"
+//#include "deque.h"
 
 /// Castle
 
@@ -26,7 +29,7 @@ TEST(Castle, getters){
 
 TEST(Castle, damage_increaseGold){
     Castle castle("MyCastle", 1000, 100);
-    Enemy enemy("MyEnemy", 100, 1000, 1, 1, 1, 1);
+    Enemy enemy("MyEnemy", 100, 1000, 1);
     castle.damage(enemy);
     EXPECT_EQ(900, castle.getCurrentHp());
     EXPECT_EQ(100, castle.getGold());
@@ -89,19 +92,19 @@ TEST(Enemy, gettersVoid){
 }
 
 TEST(Enemy, getters){
-    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
-    EXPECT_EQ(1, enemy.getX());
-    EXPECT_EQ(3, enemy.getY());
+    Enemy enemy("MyEnemy", 100, 10, 15);
+    EXPECT_EQ(-1, enemy.getX());
+    EXPECT_EQ(-1, enemy.getY());
     EXPECT_EQ(10, enemy.getGold());
     EXPECT_EQ(100, enemy.getCurrentHp());
     EXPECT_EQ(100, enemy.getMaxHp());
-    EXPECT_EQ(1, enemy.getDirection());
+    EXPECT_EQ(0, enemy.getDirection());
     EXPECT_EQ("MyEnemy", enemy.getName());
     EXPECT_EQ(15, enemy.getSpeed());
 }
 
 TEST(Enemy, modificators){
-    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
+    Enemy enemy("MyEnemy", 100, 10, 15);
     enemy.move(4, 8, -2);
     EXPECT_EQ(4, enemy.getX());
     EXPECT_EQ(8, enemy.getY());
@@ -138,20 +141,20 @@ TEST(Trap, getters){
 }
 
 
-//TEST(Trap, modificators){
-//    DebilitationSpell spell(12, 1);
-//    Trap trap(&spell, 3);
-//    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
-//    trap.hit(&enemy);
-//    EXPECT_EQ(1, enemy.getX());
-//    EXPECT_EQ(3, enemy.getY());
-//    EXPECT_EQ(10, enemy.getGold());
-//    EXPECT_EQ(100, enemy.getCurrentHp());
-//    EXPECT_EQ(100, enemy.getMaxHp());
-//    EXPECT_EQ(1, enemy.getDirection());
-//    EXPECT_EQ("MyEnemy", enemy.getName());
-//    EXPECT_EQ(15, enemy.getSpeed());
-//}
+TEST(Trap, modificators){
+    DebilitationSpell spell(12, 1);
+    Trap trap(&spell, 3);
+    Enemy enemy("MyEnemy", 100, 10, 15);
+    trap.hit(&enemy);
+    EXPECT_EQ(-1, enemy.getX());
+    EXPECT_EQ(-1, enemy.getY());
+    EXPECT_EQ(10, enemy.getGold());
+    EXPECT_EQ(100, enemy.getCurrentHp());
+    EXPECT_EQ(100, enemy.getMaxHp());
+    EXPECT_EQ(0, enemy.getDirection());
+    EXPECT_EQ("MyEnemy", enemy.getName());
+    EXPECT_EQ(15, enemy.getSpeed());
+}
 
 
 /// Tower
@@ -173,7 +176,7 @@ TEST(BaseTower, allMethods){
     EXPECT_EQ(2, tower.getLvl());
     EXPECT_EQ(BaseTowerLVL[2].radius, tower.getArea());
     EXPECT_EQ(2, tower.getType());
-    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
+    Enemy enemy("MyEnemy", 100, 10, 15);
     tower.hit(&enemy);
     EXPECT_EQ(100 - BaseTowerLVL[2].damage, enemy.getCurrentHp());
     EXPECT_EQ(100, enemy.getMaxHp());
@@ -199,11 +202,153 @@ TEST(MagicTower, allMethods){
     EXPECT_EQ(2, tower.getLvl());
     EXPECT_EQ(MagicTowerLVL[2].radius, tower.getArea());
     EXPECT_EQ(2, tower.getType());
-    Enemy enemy("MyEnemy", 100, 10, 15, 1, 3, 1);
+    Enemy enemy("MyEnemy", 100, 10, 15);
     tower.hit(&enemy);
     EXPECT_EQ(100 - MagicTowerLVL[2].damage, enemy.getCurrentHp());
     EXPECT_EQ(100, enemy.getMaxHp());
 }
+
+
+/// Lair
+
+TEST(Lair, allMethods){
+    Lair lair;
+    EnemyTime enemy1("MyEnemy1", 100, 10, 15, 3);
+    EnemyTime enemy2("MyEnemy2", 100, 10, 15, 5);
+    EnemyTime enemy3("MyEnemy3", 100, 10, 15, 1);
+    EnemyTime enemy4("MyEnemy4", 100, 10, 15, 6);
+    EnemyTime enemy5("MyEnemy5", 100, 10, 15, 4);
+    EXPECT_EQ(1, lair.getType());
+    EXPECT_EQ(false, lair.hasEnemies());
+    lair.pushEnemy(enemy1);
+    lair.pushEnemy(enemy2);
+    lair.pushEnemy(enemy3);
+    lair.pushEnemy(enemy4);
+    lair.pushEnemy(enemy5);
+    EXPECT_EQ(true, lair.hasEnemies());
+    EXPECT_EQ("MyEnemy3", lair.releaseEnemy(1)->getName());
+    EXPECT_EQ("MyEnemy1", lair.releaseEnemy(3)->getName());
+    EXPECT_EQ(nullptr, lair.releaseEnemy(1));
+}
+
+
+/// TowerDefence
+
+const std::string castleFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefence/settingFiles/castle.txt";
+const std::string mapFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefence/settingFiles/map.txt";
+const std::string lairFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefence/settingFiles/lair.txt";
+
+
+TEST(TowerDefence, inputCastleFromFile){
+    std::ifstream castleStream(castleFileName);
+    EXPECT_EQ(1, castleStream.is_open());
+    TowerDefence td;
+    Castle* castle = td.loadCastle(castleStream);
+    castleStream.close();
+    if (castle){
+        EXPECT_EQ("MyCastle", castle->getName());
+        EXPECT_EQ(100, castle->getMaxHp());
+        EXPECT_EQ(1000, castle->getGold());
+    }
+    else {
+        EXPECT_EQ(1, 0);
+    }
+    delete castle;
+}
+
+
+
+TEST(TowerDefence, inputLairFromFile){
+    std::ifstream lairStream(lairFileName);
+    EXPECT_EQ(1, lairStream.is_open());
+    TowerDefence td;
+    Lair* lair = td.loadLair(lairStream);
+    EXPECT_EQ(true, lair->hasEnemies());
+
+    Enemy* enemy = lair->releaseEnemy(0);
+    EXPECT_EQ("Enemy1", enemy->getName());
+    EXPECT_EQ(10, enemy->getMaxHp());
+    EXPECT_EQ(15, enemy->getGold());
+    EXPECT_EQ(1, enemy->getSpeed());
+    delete enemy;
+
+    enemy = lair->releaseEnemy(1);
+    EXPECT_EQ("Enemy4", enemy->getName());
+    EXPECT_EQ(10, enemy->getMaxHp());
+    EXPECT_EQ(15, enemy->getGold());
+    EXPECT_EQ(1, enemy->getSpeed());
+    delete enemy;
+
+    enemy = lair->releaseEnemy(2);
+    EXPECT_EQ("Enemy2", enemy->getName());
+    EXPECT_EQ(10, enemy->getMaxHp());
+    EXPECT_EQ(15, enemy->getGold());
+    EXPECT_EQ(1, enemy->getSpeed());
+    delete enemy;
+
+    enemy = lair->releaseEnemy(3);
+    EXPECT_EQ("Enemy3", enemy->getName());
+    EXPECT_EQ(10, enemy->getMaxHp());
+    EXPECT_EQ(15, enemy->getGold());
+    EXPECT_EQ(1, enemy->getSpeed());
+    delete enemy;
+
+    enemy = lair->releaseEnemy(7);
+    EXPECT_EQ("Enemy5", enemy->getName());
+    EXPECT_EQ(10, enemy->getMaxHp());
+    EXPECT_EQ(15, enemy->getGold());
+    EXPECT_EQ(1, enemy->getSpeed());
+    delete enemy;
+
+
+    lairStream.close();
+    delete lair;
+}
+
+
+TEST(TowerDefence, inputMapFromFile){
+    int status[] = {forest, road, field, forest, field, road, road, field, field, field, road, road, forest, field, forest, forest};
+    std::ifstream lairStream(lairFileName);
+    EXPECT_EQ(1, lairStream.is_open());
+    std::ifstream castleStream(castleFileName);
+    EXPECT_EQ(1, castleStream.is_open());
+    std::ifstream mapStream(mapFileName);
+    EXPECT_EQ(1, mapStream.is_open());
+
+    TowerDefence td;
+    td.loadMap(mapStream, castleStream, lairStream);
+    Landscape landscape = td.getLandscapeCopy();
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            EXPECT_EQ(status[4 * i + j], landscape.getTypeOfField(i, j));
+        }
+    }
+}
+
+
+TEST(deque, standard){
+
+
+
+
+
+}
+
+//TEST(TowerDefence, startGame){
+//    std::ifstream lairStream(lairFileName);
+//    EXPECT_EQ(1, lairStream.is_open());
+//    std::ifstream castleStream(castleFileName);
+//    EXPECT_EQ(1, castleStream.is_open());
+//    std::ifstream mapStream(mapFileName);
+//    EXPECT_EQ(1, mapStream.is_open());
+//
+//    TowerDefence td;
+//    td.loadMap(mapStream, castleStream, lairStream);
+//    td.startGame();
+//}
+
+
+
 
 
 //TEST(Castle, getgold){

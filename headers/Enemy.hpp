@@ -21,7 +21,7 @@ private:
 public:
     // Конструкторы
     Enemy();
-    Enemy(std::string name_, int maxHp_, int gold_, int speed_, int x_, int y_, int direction_);
+    Enemy(std::string name_, int maxHp_, int gold_, int speed_);
     // Селекторы
     int getX() const{return x;};
     int getY() const{return y;};

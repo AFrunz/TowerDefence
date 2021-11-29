@@ -1,7 +1,16 @@
 #include <iostream>
 #include <vector>
-//#include "headers/Objects.hpp"
+
+
+
 #include "headers/TowerDefence.h"
+
+
+const char* castleFileName = "settingFiles/castle.txt";
+const char* mapFileName = "settingFiles/map.txt";
+const char* lairFileName = "settingFiles/lair.txt";
+
+
 
 int main() {
     std::vector<int> a;

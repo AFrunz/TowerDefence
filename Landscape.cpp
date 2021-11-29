@@ -7,7 +7,7 @@
 //private:
 //int fieldSize;                                   /// Величина игрового поля
 //std::list<Enemy*> enemies;                       /// Позиции врагов
-//std::vector<std::vector<Field>> table;           /// Информация об игровом поле
+//std::deque<std::deque<Field>> table;           /// Информация об игровом поле
 
 Landscape::Landscape():fieldSize(0), table(), xCastle(-1), yCastle(-1){}
 
@@ -53,33 +53,42 @@ std::vector<Enemy*> Landscape::findEnemiesInTheArea(int x, int y, int r){
     return res;
 }
 
-bool Landscape::findRoad(int& x, int& y, int& direction) const{
+bool Landscape::findRoad(int& x, int& y, int& direction) const {
     bool flag = false;
     if (x >= 0 && x < (fieldSize - 1)) {
-        if (table[x + 1][y].type == road && direction != -1) {
+        if (table[x + 1][y].type == road && direction != -1 ||
+        table[x + 1][y].building && table[x + 1][y].building->getType() == castle_) {
             x++;
             direction = 1;
-            flag = true;
+            return true;
         }
     }
-    if (x <= (fieldSize - 1) && !flag) {
-        if (table[x - 1][y].type == road && direction != 1) {
+    if (x > 0 && x <= (fieldSize - 1)) {
+        if (table[x - 1][y].type == road && direction != 1 ||
+            table[x - 1][y].building && table[x - 1][y].building->getType() == castle_) {
             x--;
             direction = -1;
+            return true;
         }
     }
-    if (y >= 0 && y < (fieldSize - 1) && table[x][y + 1].type == road && direction != 2){
-        y++;
-        direction = -2;
-        flag = true;
+    if (y >= 0 && y < (fieldSize - 1)){
+        if (table[x][y + 1].type == road && direction != 2 ||
+        table[x][y + 1].building && table[x][y + 1].building->getType() == castle_) {
+            y++;
+            direction = -2;
+            return true;
+        }
     }
-    if (y <= (fieldSize - 1) && y > 0 && table[x][y - 1].type == road && direction != -2){
-        y--;
-        direction = 2;
-        flag = true;
+    if (y <= (fieldSize - 1) && y > 0) {
+        if (table[x][y - 1].type == road && direction != -2 ||
+           table[x][y - 1].building && table[x][y - 1].building->getType() == castle_) {
+            y--;
+            direction = 2;
+            return true;
     }
-    return flag;
-}
+    }
+    return false;
+    }
 
 // доделать:
 
@@ -90,7 +99,7 @@ int Landscape::updateSituation(int time){
 
     for (int i = 0; i < fieldSize; i++){
         for (int j = 0; j < fieldSize; j++){
-            if (table[i][j].type == forest || !table[i][j].building) continue;
+            if (!table[i][j].building) continue;
             if (table[i][j].type == field && table[i][j].building->getType() == tower_){
                 Tower* tower = dynamic_cast<Tower*>(table[i][j].building);
                 std::vector<Enemy*> enemiesInArea = findEnemiesInTheArea(i, j, tower->getArea());
@@ -119,8 +128,7 @@ int Landscape::updateSituation(int time){
                     }
                 }
                 else {
-                    enemy->move(x, y);
-                    enemy->setDirection(direction);
+                    enemy->move(x, y, direction);
                     enemies.push_back(enemy);
                 }
             }
@@ -187,7 +195,7 @@ int Landscape::checkCorrect() const {
     return 1;
 }
 
-int Landscape::setBuilding(Building *building, int x, int y) {
+void Landscape::setBuilding(Building *building, int x, int y) {
     if (x >= fieldSize || y >= fieldSize || x < 0 || y < 0) throw std::runtime_error("Wrong cords\n");
     if (!building) throw std::runtime_error("Null ptr\n");
     int inputType = building->getType();
@@ -196,11 +204,14 @@ int Landscape::setBuilding(Building *building, int x, int y) {
             if (x == xCastle && y == yCastle){
                 delete table[x][y].building;
                 table[x][y].building = building;
-                return 0;
+                return;
             }
             else throw std::runtime_error("Castle already exist\n");
         }
-        else throw std::runtime_error("Castle already exist\n");
+        else {
+            table[x][y].building = building;
+            return;
+        };
     }
     else if (inputType == tower_){
         if (table[x][y].type != field) throw std::runtime_error("Wrong place\n");
@@ -216,7 +227,6 @@ int Landscape::setBuilding(Building *building, int x, int y) {
         if (table[x][y].building) throw std::runtime_error("Place is taken\n");
         table[x][y].building = building;
     }
-    return 0;
 }
 
 
