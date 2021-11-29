@@ -260,8 +260,8 @@ internal::ParamGenerator<T> Range(T start, T end) {
 // This instantiates tests from test suite StlStringTest
 // each with STL strings with values "a" and "b":
 //
-// ::std::deque< ::std::string> GetParameterStrings() {
-//   ::std::deque< ::std::string> v;
+// ::std::list< ::std::string> GetParameterStrings() {
+//   ::std::list< ::std::string> v;
 //   v.push_back("a");
 //   v.push_back("b");
 //   return v;

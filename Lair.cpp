@@ -8,7 +8,7 @@
 /////Логово
 //class Lair:public Building{
 //private:
-//    std::deque<EnemyTime> timetable;       /// ТАБЛИЦА ОПИСАТЕЛЕЙ ВРАГОВ И ВРЕМЯ ВЫХОДА ИЗ ЛОГОВА
+//    std::list<EnemyTime> timetable;       /// ТАБЛИЦА ОПИСАТЕЛЕЙ ВРАГОВ И ВРЕМЯ ВЫХОДА ИЗ ЛОГОВА
 //public:
 //    Lair();
 //    int releaseEnemy(int time);             // Возможно добавить ландшафт в список параметров
@@ -37,7 +37,10 @@ int Lair::getType() const {
 void Lair::sort() {
     auto itSt = timetable.begin();
     auto itEn = timetable.end();
-    std::sort(itSt, itEn, [](EnemyTime& a, EnemyTime& b){
+//    std::sort(itSt, itEn, [](EnemyTime& a, EnemyTime& b){
+//        return a.time < b.time;
+//    });
+    timetable.sort([](EnemyTime& a, EnemyTime& b){
         return a.time < b.time;
     });
 }

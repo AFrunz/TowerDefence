@@ -7,7 +7,7 @@
 #include "Tower.hpp"
 #include "Lair.hpp"
 #include "TowerDefence.h"
-//#include "deque.h"
+#include "list.hpp"
 
 /// Castle
 
@@ -326,13 +326,28 @@ TEST(TowerDefence, inputMapFromFile){
 }
 
 
-TEST(deque, standard){
-
-
-
+TEST(list, standard){
+    list<int> deq;
+    deq.push_back(12);
+    deq.push_front(1);
+    EXPECT_EQ(1, deq.front());
+    EXPECT_EQ(12, deq.back());
+    deq.pop_front();
+    EXPECT_EQ(12, deq.front());
+    EXPECT_EQ(12, deq.back());
+    deq.pop_front();
+    EXPECT_ANY_THROW(deq.back());
+    EXPECT_EQ(true, deq.empty());
+    deq.push_back(12);
+    deq.push_front(1);
+    list<int>::iterator it = deq.begin();
+    EXPECT_EQ(1, *it);
+    EXPECT_EQ(12, *(++it));
 
 
 }
+
+
 
 //TEST(TowerDefence, startGame){
 //    std::ifstream lairStream(lairFileName);

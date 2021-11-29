@@ -66,7 +66,7 @@ GTEST_API_ std::string FormatMatcherDescription(bool negation,
 //
 // Neither the flow graph nor the residual flow graph are represented
 // explicitly. Instead, they are implied by the information in 'graph' and
-// a deque<int> called 'left_' whose elements are initialized to the
+// a list<int> called 'left_' whose elements are initialized to the
 // value kUnused. This represents the initial state of the algorithm,
 // where the flow graph is empty, and the residual flow graph has the
 // following edges:
@@ -92,7 +92,7 @@ GTEST_API_ std::string FormatMatcherDescription(bool negation,
 // never represented explicitly, but can be derived by looking at the
 // information in 'graph' and in left_.
 //
-// As an optimization, there is a second deque<int> called right_ which
+// As an optimization, there is a second list<int> called right_ which
 // does not provide any new information. Instead, it enables more
 // efficient queries about edges entering or leaving the right-side nodes
 // of the flow or residual flow graphs. The following invariants are
@@ -142,7 +142,7 @@ class MaxBipartiteMatchState {
     // The flow is known to be possible or impossible by looking at the
     // node once.
     for (size_t ilhs = 0; ilhs < graph_->LhsSize(); ++ilhs) {
-      // Reset the path-marking deque and try to find a path from
+      // Reset the path-marking list and try to find a path from
       // source to sink starting at the left_[ilhs] node.
       GTEST_CHECK_(left_[ilhs] == kUnused)
           << "ilhs: " << ilhs << ", left_[ilhs]: " << left_[ilhs];
@@ -164,9 +164,9 @@ class MaxBipartiteMatchState {
 
   // Perform a depth-first search from left node ilhs to the sink.  If a
   // path is found, flow is added to the network by linking the left and
-  // right deque elements corresponding each segment of the path.
+  // right list elements corresponding each segment of the path.
   // Returns true if a path to sink was found, which means that a unit of
-  // flow was added to the network. The 'seen' deque elements correspond
+  // flow was added to the network. The 'seen' list elements correspond
   // to right nodes and are marked to eliminate cycles from the search.
   //
   // Left nodes will only be explored at most once because they
@@ -205,14 +205,14 @@ class MaxBipartiteMatchState {
   }
 
   const MatchMatrix* graph_;  // not owned
-  // Each element of the left_ deque represents a left hand side node
+  // Each element of the left_ list represents a left hand side node
   // (i.e. an element) and each element of right_ is a right hand side
-  // node (i.e. a matcher). The values in the left_ deque indicate
+  // node (i.e. a matcher). The values in the left_ list indicate
   // outflow from that node to a node on the right_ side. The values
   // in the right_ indicate inflow, and specify which left_ node is
   // feeding that right_ node, if any. For example, left_[3] == 1 means
   // there's a flow from element #3 to matcher #1. Such a flow would also
-  // be redundantly represented in the right_ deque as right_[1] == 3.
+  // be redundantly represented in the right_ list as right_[1] == 3.
   // Elements of left_ and right_ are either kUnused or mutually
   // referent. Mutually referent means that left_[right_[i]] = i and
   // right_[left_[i]] = i.

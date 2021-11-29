@@ -669,7 +669,7 @@ class ReturnAction {
     typedef typename Function<F>::ArgumentTuple ArgumentTuple;
 
     // The implicit cast is necessary when Result has more than one
-    // single-argument constructor (e.g. Result is std::deque<int>) and R
+    // single-argument constructor (e.g. Result is std::list<int>) and R
     // has a type conversion operator template.  In that case, value_(value)
     // won't compile as the compiler doesn't known which constructor of
     // Result to call.  ImplicitCast_ forces the compiler to convert R to

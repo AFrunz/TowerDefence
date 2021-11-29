@@ -2640,7 +2640,7 @@ class PointwiseMatcher {
           StringMatchResultListener inner_listener;
           // Create InnerMatcherArg as a temporarily object to avoid it outlives
           // *left and *right. Dereference or the conversion to `const T&` may
-          // return temp objects, e.g. for deque<bool>.
+          // return temp objects, e.g. for list<bool>.
           if (!mono_tuple_matcher_.MatchAndExplain(
                   InnerMatcherArg(ImplicitCast_<const LhsValue&>(*left),
                                   ImplicitCast_<const RhsValue&>(*right)),
@@ -3526,7 +3526,7 @@ typedef ::std::pair<size_t, size_t> ElementMatcherPair;
 typedef ::std::vector<ElementMatcherPair> ElementMatcherPairs;
 
 // Returns a maximum bipartite matching for the specified graph 'g'.
-// The matching is represented as a deque of {element, matcher} pairs.
+// The matching is represented as a list of {element, matcher} pairs.
 GTEST_API_ ElementMatcherPairs
 FindMaxBipartiteMatching(const MatchMatrix& g);
 
@@ -3547,7 +3547,7 @@ class GTEST_API_ UnorderedElementsAreMatcherImplBase {
       UnorderedMatcherRequire::Flags matcher_flags)
       : match_flags_(matcher_flags) {}
 
-  // A deque of matcher describers, one for each element matcher.
+  // A list of matcher describers, one for each element matcher.
   // Does not own the describers (and thus can be used only when the
   // element matchers are alive).
   typedef ::std::vector<const MatcherDescriberInterface*> MatcherDescriberVec;
@@ -3791,7 +3791,7 @@ class ElementsAreArrayMatcher {
 // UnorderedPointwise() in terms of UnorderedElementsAreArray().
 //
 // BoundSecondMatcher is copyable and assignable, as we need to put
-// instances of this class in a deque when implementing
+// instances of this class in a list when implementing
 // UnorderedPointwise().
 template <typename Tuple2Matcher, typename Second>
 class BoundSecondMatcher {
@@ -3807,7 +3807,7 @@ class BoundSecondMatcher {
   }
 
   // We have to define this for UnorderedPointwise() to compile in
-  // C++98 mode, as it puts BoundSecondMatcher instances in a deque,
+  // C++98 mode, as it puts BoundSecondMatcher instances in a list,
   // which requires the elements to be assignable in C++98.  The
   // compiler cannot generate the operator= for us, as Tuple2Matcher
   // and Second may not be assignable.
@@ -4128,7 +4128,7 @@ class ArgsMatcher {
 // The ElementsAreArray() functions are like ElementsAre(...), except
 // that they are given a homogeneous sequence rather than taking each
 // element as a function argument. The sequence can be specified as an
-// array, a pointer and count, a deque, an initializer list, or an
+// array, a pointer and count, a list, an initializer list, or an
 // STL iterator range. In each of these cases, the underlying sequence
 // can be either a sequence of values or a sequence of matchers.
 //
@@ -4800,7 +4800,7 @@ UnorderedPointwise(const Tuple2Matcher& tuple2_matcher,
 // occurrences including testing for absence with Times(0).
 //
 // Examples:
-//   ::std::deque<int> ids;
+//   ::std::list<int> ids;
 //   ids.insert(1);
 //   ids.insert(1);
 //   ids.insert(3);

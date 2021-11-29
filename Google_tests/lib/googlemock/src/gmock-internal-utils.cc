@@ -52,7 +52,7 @@
 namespace testing {
 namespace internal {
 
-// Joins a deque of strings as if they are fields of a tuple; returns
+// Joins a list of strings as if they are fields of a tuple; returns
 // the joined string.
 GTEST_API_ std::string JoinAsTuple(const Strings& fields) {
   switch (fields.size()) {

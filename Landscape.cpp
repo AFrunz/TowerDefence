@@ -7,7 +7,7 @@
 //private:
 //int fieldSize;                                   /// Величина игрового поля
 //std::list<Enemy*> enemies;                       /// Позиции врагов
-//std::deque<std::deque<Field>> table;           /// Информация об игровом поле
+//std::list<std::list<Field>> table;           /// Информация об игровом поле
 
 Landscape::Landscape():fieldSize(0), table(), xCastle(-1), yCastle(-1){}
 
