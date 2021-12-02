@@ -50,7 +50,21 @@ void Enemy::move(int x_, int y_, int direction_) {
 int Enemy::getDirection() const{
     return direction;
 }
-//////////////////////////////////////////////
+/*/////////////////////////////////////////////*/
 void Enemy::addSpell(Spell *spell) {
+    spellList.push_back(spell);
+}
 
+void Enemy::takeDamageFromPoison() {
+    auto it = spellList.begin();
+    while (it != spellList.end()){
+        if ((*it)->getTime() <= 0){
+            it = spellList.erase(it);
+            continue;
+        }
+        if ((*it)->getType() == 2){
+            currentHp -= (*it)->getPower();
+        }
+        it++;
+    }
 }

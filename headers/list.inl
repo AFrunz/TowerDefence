@@ -1,5 +1,4 @@
 
-#include "list.hpp"
 
 template<class type>
 list<type>::list():size(0), head(nullptr), tail(nullptr){}
@@ -206,6 +205,41 @@ typename list<type>::iterator list<type>::end(){
 }
 
 template<class type>
+void list<type>::sort(const std::function<bool(type& a, type& b)> compareFunc) {
+    if (!head) return;
+    for (int i = 0; i < size; i++){
+        item *ptr2;
+        item *ptr1;
+        ptr1 = head;
+        while (ptr1){
+            ptr2 = ptr1->next;
+            if (ptr2 && !compareFunc(ptr1->element, ptr2->element)) {
+                ptr1->next = ptr2->next;
+                if (ptr1->next){
+                    ptr1->next->previous = ptr1;
+                }
+                ptr2->previous = ptr1->previous;
+                if (ptr2->previous){
+                    ptr2->previous->next = ptr2;
+                }
+                ptr2->next = ptr1;
+                ptr1->previous = ptr2;
+                if (ptr1 == head){
+                    head = ptr2;
+                }
+                if (ptr2 == tail){
+                    tail = ptr1;
+                }
+                ptr2 = ptr1;
+            }
+            else {
+                ptr1 = ptr2;
+            }
+        }
+    }
+}
+
+template<class type>
 typename list<type>::iterator &list<type>::iterator::operator++() {
     el = el->next;
     return *this;
@@ -251,25 +285,6 @@ bool list<type>::iterator::operator!=(const list::iterator &it) const {
     return el != it->el;
 }
 
-template<class type>
-typename list<type>::iterator list<type>::iterator::operator-(const list::iterator &it) const{
-    int counter = 0;
-    item* buf;
-    buf = el;
-    while (buf && buf != it.el){
-        counter++;
-        buf = buf->previous;
-    }
-    if (buf == it.el) return counter;
-    buf = el;
-    counter = 0;
-    while (buf && buf!= it.el){
-        counter--;
-        buf = buf->next;
-    }
-    if (buf == it.el) return counter;
-    throw std::runtime_error("Iterators that target on the different objects\n");
-}
 
 
 

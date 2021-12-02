@@ -4,13 +4,13 @@
 #include "Spell.hpp"
 #include "Building.hpp"
 #include "Enemy.hpp"
-//#include "Settings.cpp"
 
+/// Характеристики башни
 class TowerFeature{
 public:
-    int damage;
-    int radius;
-    int price;
+    int damage;         ///< Урон
+    int radius;         ///< Радиус обстрела
+    int price;          ///< Цена
 };
 
 const int MAX_LVL_OF_BASE_TOWER = 2;
@@ -22,32 +22,34 @@ const TowerFeature MagicTowerLVL[] = {{1, 1, 200}, {2, 1, 400}, {2, 2, 500}};
 class Tower:public Building{
 
 protected:
-    int lvl;
-    TowerFeature features;
+    int lvl;                    ///< Уровень башни
+    TowerFeature features;      ///< Характеристики башни
 public:
     Tower();
-    int getType() const;
-    int getLvl() const;
-    int getArea() const;
-    virtual void lvlUp() = 0;
-    virtual int hit(Enemy* target) = 0;
+    int getType() const;                    ///< Получение типа постройки
+    int getLvl() const;                     ///< Получение уровня башни
+    int getArea() const;                    ///< Получение радиуса обстрела
+    virtual void lvlUp() = 0;               ///< Повышение уровня
+    virtual int hit(Enemy* target) = 0;     ///< Нанесение урона врагу
 };
 
-
+/// Обычная башня
 class BaseTower:public Tower{
 public:
     BaseTower();
-    void lvlUp() override;
-    int hit(Enemy* target) override;
+    void lvlUp() override;                  ///< Повышение уровня
+    int hit(Enemy* target) override;        ///< Нанесение урона врагу
 };
 
+
+/// Магическая башня
 class MagicTower:public Tower{
 private:
-    Spell* towerSpell;
+    Spell* towerSpell;                      ///< Эффекты, накладываемые башней
 public:
     MagicTower();
-    void lvlUp() override;
-    int hit(Enemy* target) override;
+    void lvlUp() override;                  ///< Повышение уровня
+    int hit(Enemy* target) override;        ///< Нанесение урона врагу
 };
 
 

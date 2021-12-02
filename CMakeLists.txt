@@ -6,7 +6,7 @@ add_subdirectory(Google_tests)
 
 
 add_executable(TowerDefence main.cpp Landscape.cpp Lair.cpp Castle.cpp Spell.cpp Tower.cpp TowerDefence.cpp
-        headers/TowerDefence.h Enemy.cpp headers/list.hpp Google_tests/tests.cpp Trap.cpp
+        headers/TowerDefence.h Enemy.cpp headers/list.hpp Trap.cpp
         mainProgram.cpp)
 #add_executable(TowerDefence main.cpp)
 

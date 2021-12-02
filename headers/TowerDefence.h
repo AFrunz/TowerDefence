@@ -2,20 +2,23 @@
 #define TOWERDEFENCE_TOWERDEFENCE_H
 #include "Landscape.hpp"
 #include <map>
+#include <fstream>
+
+/// Счетчик времени
 class Timer{
 private:
-    double timeStart;
-    double currentTime;
-    double speed;
-    int units;
+    double timeStart;                   /// Начало отсчета
+    double currentTime;                 /// Текущее время
+    double speed;                       /// Скорость течения времени
+    int units;                          /// Время в условных единицах
 public:
     Timer();
-    int getTimeInUnits();
-    void setTimeout(double t);
-    void setSpeed(double speed_ = 1);
+    int getTimeInUnits();               /// Получение времени в условных единицах
+    void setTimeout(double t);          /// Установка задержки
+    void setSpeed(double speed_ = 1);   /// Установка скорости течения времени
 };
 
-///// Побочный класс для хранения сведений о клетке поля
+// Побочный класс для хранения сведений о клетке поля
 //struct Field{
 //    int type;
 //    Building* building;
@@ -23,7 +26,7 @@ public:
 //    Field(int type_, Building* building_):type(type_), building(building_){};
 //};
 //
-///// Типы клеток(убрать)
+// Типы клеток(убрать)
 //enum FieldTypes{
 //    road = 1,
 //    field = 2,
@@ -50,20 +53,19 @@ public:
 // speed
 // time
 
+const std::string logFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefenceV2/settingFiles/log.txt";
 
-
-
-
-
+/// Общий класс-интерфейс
 class TowerDefence {
 private:
-    Landscape landscape;
-    Timer timer;
+    Landscape landscape;                        /// Ландшафт
+    Timer timer;                                /// Счетчик времени
 public:
     TowerDefence():landscape(), timer(){};
 
-    Landscape getLandscapeCopy(){return landscape;};
+    Landscape getLandscapeCopy(){return landscape;};    /// Получение копии ландшафта(для тестов)
 
+/// Загрузка замка из потока
     Castle* loadCastle(std::istream &CastleInput){
         std::string name;
         CastleInput >> name;
@@ -78,6 +80,7 @@ public:
         return castle;
     }
 
+/// Загрузка логова из потока
     Lair* loadLair(std::istream &LairInput){
         int num;                // Количество врагов в логове
         LairInput >> num;
@@ -102,6 +105,7 @@ public:
         return lair;
     }
 
+/// Загрузка карты из потока
     void loadMap(std::istream &MapInput, std::istream &CastleInput, std::istream &LairInput){
         int num;
         MapInput >> num;
@@ -136,11 +140,20 @@ public:
         landscape.checkCorrect();
     }
 
+/// Создание лога
+    void createLog(){
+        std::fstream logFile(logFileName);
+        logFile << timer.getTimeInUnits() << std::endl;
+    }
 
-///
+/// Начало игры
+/// Доработать setTimeout
     int startGame(){
         int status = landscape.updateSituation(timer.getTimeInUnits());
+        landscape.updateEnemiesPosition();
         if (status == 0) return 0;
+        createLog();
+        timer.setTimeout(1);
         status = this->startGame();
         return status;
     }

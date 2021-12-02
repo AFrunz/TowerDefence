@@ -1,6 +1,6 @@
 #include "headers/Spell.hpp"
 
-/// Global spell
+// Global spell
 
 Spell::Spell():time(0), power(0) {}
 
@@ -15,7 +15,7 @@ int Spell::getPower() const {
 }
 
 
-/// Slowing Spell
+// Slowing Spell
 
 SlowingSpell::SlowingSpell():Spell(){}
 
@@ -25,7 +25,7 @@ int SlowingSpell::getType() const {
     return 1;
 }
 
-///Poisoning spell
+//Poisoning spell
 
 PoisoningSpell::PoisoningSpell():Spell() {}
 
@@ -35,7 +35,7 @@ int PoisoningSpell::getType() const {
     return 2;
 }
 
-/// Debilitation spell
+// Debilitation spell
 
 
 DebilitationSpell::DebilitationSpell():Spell() {}

@@ -5,7 +5,7 @@
 //    Enemy enemy;
 //    int time;
 //};
-/////Логово
+//Логово
 //class Lair:public Building{
 //private:
 //    std::list<EnemyTime> timetable;       /// ТАБЛИЦА ОПИСАТЕЛЕЙ ВРАГОВ И ВРЕМЯ ВЫХОДА ИЗ ЛОГОВА

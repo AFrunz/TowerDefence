@@ -6,15 +6,15 @@
 #include "Building.hpp"
 #include <list>
 //#include "list.hpp"
-//using std::list;
-//using std::list;
+using std::list;
 
 
 class Enemy;
 
+/// Элемент таблицы
 struct EnemyTime{
-    Enemy* enemy;
-    int time;
+    Enemy* enemy;               ///< Указатель на врага
+    int time;                   ///< Время выхода
     EnemyTime() = default;
     EnemyTime(std::string name_, int maxHp_, int gold_, int speed_, int time_):time(time_){
         enemy = new Enemy(name_, maxHp_, gold_, speed_);
@@ -28,14 +28,14 @@ struct EnemyTime{
 ///Логово
 class Lair:public Building{
 private:
-    list<EnemyTime> timetable;       /// ТАБЛИЦА ОПИСАТЕЛЕЙ ВРАГОВ И ВРЕМЯ ВЫХОДА ИЗ ЛОГОВА
+    list<EnemyTime> timetable;          ///< Таблица описателей врагов и время выхода из логова
 public:
     Lair();
-    int getType() const;
-    void sort();
-    Enemy* releaseEnemy(int time);
-    void pushEnemy(EnemyTime ceil);
-    bool hasEnemies() const;
+    int getType() const;                ///< Получение типа постройки
+    void sort();                        ///< Сортировка по времени выхода
+    Enemy* releaseEnemy(int time);      ///< Выпустить врага
+    void pushEnemy(EnemyTime ceil);     ///< Поместить врага в таблицу
+    bool hasEnemies() const;            ///< Указывает наличие врагов в таблице
     virtual ~Lair() = default;
 };
 

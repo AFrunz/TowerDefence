@@ -1,5 +1,5 @@
 #include <iostream>
-/// Tower settings
+// Tower settings
 
 class TowerFeature{
 public:
@@ -12,7 +12,7 @@ const int MAX_LVL_OF_TOWER = 2;
 const TowerFeature TowerLVL[] = {{1, 1, 100}, {1, 2, 200}, {2, 3, 500}};
 
 
-/// Map settings
+// Map settings
 
 //L - layer
 //F - forest

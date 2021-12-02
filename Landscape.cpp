@@ -91,6 +91,7 @@ bool Landscape::findRoad(int& x, int& y, int& direction) const {
     }
 
 // доделать:
+// башня должна стрелять только по одному врагу
 
 int Landscape::updateSituation(int time){
     Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
@@ -116,6 +117,7 @@ int Landscape::updateSituation(int time){
                 Lair* lair = dynamic_cast<Lair*>(table[i][j].building);
                 hasEnemiesInLayers = hasEnemiesInLayers || lair->hasEnemies();
                 Enemy* enemy = lair->releaseEnemy(time);
+                if (!enemy) continue;
                 if (table[x][y].building && table[x][y].building->getType() == castle_){
                     dynamic_cast<Castle*>(table[x][y].building)->damage(*enemy);
                 }
@@ -135,13 +137,39 @@ int Landscape::updateSituation(int time){
         }
     }
 
-    for (auto enemyIter : enemies){
-        int x = enemyIter->getX();
-        int y = enemyIter->getY();
-        int direction = enemyIter->getDirection();
+    auto enemyIter = enemies.begin();
+    while (enemyIter != enemies.end()){
+        if ((*enemyIter)->getCurrentHp() <= 0){
+            enemyIter = enemies.erase(enemyIter);
+        }
+        (*enemyIter)->takeDamageFromPoison();
+    }
+
+
+
+    if (!hasEnemiesInLayers && enemies.empty()) return 0;
+
+    return 1;
+
+}
+
+
+// Движение дискретное, нет учета зелий
+int Landscape::updateEnemiesPosition(){
+    Castle *castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
+    auto enemyIter = enemies.begin();
+    while (enemyIter != enemies.end()){
+//        if ((*enemyIter)->getCurrentHp() <= 0) {
+//            enemyIter = enemies.erase(enemyIter);
+//            continue;
+//        }
+//        (*enemyIter)->damagePoisonSpells();
+        int x = (*enemyIter)->getX();
+        int y = (*enemyIter)->getY();
+        int direction = (*enemyIter)->getDirection();
         findRoad(x, y, direction);
         if (table[x][y].building && table[x][y].building->getType() == castle_){
-            castle->damage(*enemyIter);
+            castle->damage(**enemyIter);
             if (castle->getCurrentHp() <= 0) return -1;
         }
         else {
@@ -150,19 +178,21 @@ int Landscape::updateSituation(int time){
                 std::vector<Enemy*> enemiesInArea = findEnemiesInTheArea(x, y, trap->getArea());
                 for (auto it : enemiesInArea){
                     trap->hit(it);
-                    if (it->getCurrentHp() <= 0) castle->increaseGold(*it);
+//                    if (it->getCurrentHp() <= 0) castle->increaseGold(*it);
                 }
                 delete trap;
                 table[x][y].building = nullptr;
             }
+            (*enemyIter)->move(x, y, direction);
         }
+        enemyIter++;
     }
 
-    if (!hasEnemiesInLayers && enemies.empty()) return 0;
-
-    return 1;
-
 }
+
+
+
+
 
 bool Landscape::checkWay(int x, int y) const{
     int direction = 0;
@@ -210,6 +240,8 @@ void Landscape::setBuilding(Building *building, int x, int y) {
         }
         else {
             table[x][y].building = building;
+            xCastle = x;
+            yCastle = y;
             return;
         };
     }

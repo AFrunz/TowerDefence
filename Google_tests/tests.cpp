@@ -323,26 +323,58 @@ TEST(TowerDefence, inputMapFromFile){
             EXPECT_EQ(status[4 * i + j], landscape.getTypeOfField(i, j));
         }
     }
+
+}
+
+TEST(TowerDefence, stratGame){
+
+    std::ifstream lairStream(lairFileName);
+    EXPECT_EQ(1, lairStream.is_open());
+    std::ifstream castleStream(castleFileName);
+    EXPECT_EQ(1, castleStream.is_open());
+    std::ifstream mapStream(mapFileName);
+    EXPECT_EQ(1, mapStream.is_open());
+
+    TowerDefence td;
+    td.loadMap(mapStream, castleStream, lairStream);
+    td.startGame();
 }
 
 
+
+
 TEST(list, standard){
-    list<int> deq;
-    deq.push_back(12);
-    deq.push_front(1);
-    EXPECT_EQ(1, deq.front());
-    EXPECT_EQ(12, deq.back());
-    deq.pop_front();
-    EXPECT_EQ(12, deq.front());
-    EXPECT_EQ(12, deq.back());
-    deq.pop_front();
-    EXPECT_ANY_THROW(deq.back());
-    EXPECT_EQ(true, deq.empty());
-    deq.push_back(12);
-    deq.push_front(1);
-    list<int>::iterator it = deq.begin();
+    list<int> li;
+    li.push_back(12);
+    li.push_front(1);
+    EXPECT_EQ(1, li.front());
+    EXPECT_EQ(12, li.back());
+    li.pop_front();
+    EXPECT_EQ(12, li.front());
+    EXPECT_EQ(12, li.back());
+    li.pop_front();
+    EXPECT_ANY_THROW(li.back());
+    EXPECT_EQ(true, li.empty());
+    li.push_back(12);
+    li.push_front(1);
+    li.push_back(3);
+    li.push_back(5);
+    li.push_back(2);
+    li.push_back(7);
+    li.push_back(1);
+    li.sort([](int a, int b)->bool{
+        return a < b;
+    });
+
+    list<int>::iterator it = li.begin();
     EXPECT_EQ(1, *it);
+    EXPECT_EQ(1, *(++it));
+    EXPECT_EQ(2, *(++it));
+    EXPECT_EQ(3, *(++it));
+    EXPECT_EQ(5, *(++it));
+    EXPECT_EQ(7, *(++it));
     EXPECT_EQ(12, *(++it));
+
 
 
 }

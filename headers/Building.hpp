@@ -4,7 +4,7 @@
 // 0 - castle
 //1 - tower
 //2 -
-
+///Коды построек
 enum BuildingTypes{
     castle_ = 0,
     lair_ = 1,
@@ -13,8 +13,10 @@ enum BuildingTypes{
     trap_ = 4
 };
 
+///Абстрактный класс постройка
 class Building{
 public:
+    /// Получение типа постройки
     virtual int getType() const = 0;
     virtual ~Building() = default;
 };
