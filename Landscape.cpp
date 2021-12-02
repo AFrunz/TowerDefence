@@ -90,8 +90,7 @@ bool Landscape::findRoad(int& x, int& y, int& direction) const {
     return false;
     }
 
-// доделать:
-// башня должна стрелять только по одному врагу
+
 
 int Landscape::updateSituation(int time){
     Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
@@ -104,9 +103,15 @@ int Landscape::updateSituation(int time){
             if (table[i][j].type == field && table[i][j].building->getType() == tower_){
                 Tower* tower = dynamic_cast<Tower*>(table[i][j].building);
                 std::vector<Enemy*> enemiesInArea = findEnemiesInTheArea(i, j, tower->getArea());
-                for (auto enemy : enemiesInArea){
-                    tower->hit(enemy);
-                    if (enemy->getCurrentHp() <= 0) castle->increaseGold(*enemy);
+                if (!enemiesInArea.empty()){
+                    auto enemy = std::min_element(enemiesInArea.begin(), enemiesInArea.end(), [i, j](auto first, auto second){
+
+                        return (first->getX() - i) * (first->getX() - i) + (first->getY() - j) * (first->getY()) >
+                               (second->getX() - i) * (second->getX() - i) + (second->getY() - j) * (second->getY());
+
+                    });
+                    tower->hit(*enemy);
+                    if ((*enemy)->getCurrentHp() <= 0) castle->increaseGold(**enemy);
                 }
             }
             else if (table[i][j].building->getType() == lair_){
@@ -141,11 +146,11 @@ int Landscape::updateSituation(int time){
     while (enemyIter != enemies.end()){
         if ((*enemyIter)->getCurrentHp() <= 0){
             enemyIter = enemies.erase(enemyIter);
+            continue;
         }
         (*enemyIter)->takeDamageFromPoison();
+        enemyIter++;
     }
-
-
 
     if (!hasEnemiesInLayers && enemies.empty()) return 0;
 
@@ -159,18 +164,19 @@ int Landscape::updateEnemiesPosition(){
     Castle *castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
     auto enemyIter = enemies.begin();
     while (enemyIter != enemies.end()){
-//        if ((*enemyIter)->getCurrentHp() <= 0) {
-//            enemyIter = enemies.erase(enemyIter);
-//            continue;
-//        }
-//        (*enemyIter)->damagePoisonSpells();
+
         int x = (*enemyIter)->getX();
         int y = (*enemyIter)->getY();
         int direction = (*enemyIter)->getDirection();
+//        std::cout << (*enemyIter)->getName() << std::endl;
+//        std::cout << (*enemyIter)->getCurrentHp() << std::endl;
+//        std::cout << x << " " << y << " " << direction << std::endl;
         findRoad(x, y, direction);
         if (table[x][y].building && table[x][y].building->getType() == castle_){
             castle->damage(**enemyIter);
+            enemyIter = enemies.erase(enemyIter);
             if (castle->getCurrentHp() <= 0) return -1;
+            continue;
         }
         else {
             if (table[x][y].building && table[x][y].building->getType() == trap_){
@@ -187,11 +193,9 @@ int Landscape::updateEnemiesPosition(){
         }
         enemyIter++;
     }
-
+    if (enemies.empty()) return 0;
+    return -1;
 }
-
-
-
 
 
 bool Landscape::checkWay(int x, int y) const{
@@ -243,7 +247,7 @@ void Landscape::setBuilding(Building *building, int x, int y) {
             xCastle = x;
             yCastle = y;
             return;
-        };
+        }
     }
     else if (inputType == tower_){
         if (table[x][y].type != field) throw std::runtime_error("Wrong place\n");
@@ -258,6 +262,23 @@ void Landscape::setBuilding(Building *building, int x, int y) {
         if (table[x][y].type != road) throw std::runtime_error("Wrong place\n");
         if (table[x][y].building) throw std::runtime_error("Place is taken\n");
         table[x][y].building = building;
+    }
+}
+
+int Landscape::getTypeOfBuilding(int x, int y) const{
+    if (!table[x][y].building) return -1;
+    return table[x][y].building->getType();
+}
+
+int Landscape::getCastleGold() const{
+    Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
+    return castle->getGold();
+}
+
+void Landscape::towerUp(int x, int y) {
+    if (!table[x][y].building) return;
+    if (table[x][y].building->getType() == tower_){
+        dynamic_cast<Tower*>(table[x][y].building)->lvlUp();
     }
 }
 

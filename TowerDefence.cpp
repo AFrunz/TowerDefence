@@ -1,5 +1,5 @@
 #include "headers/TowerDefence.h"
-
+#include <unistd.h>
 
 Timer::Timer() {
     timeStart = clock();
@@ -11,9 +11,7 @@ Timer::Timer() {
 void Timer::setTimeout(double t) {
     units++;
     double tStart = clock();
-    while ((clock() - currentTime) / CLOCKS_PER_SEC < (t / speed)){
-
-    }
+    sleep(t);
     currentTime = clock() - timeStart;
 }
 

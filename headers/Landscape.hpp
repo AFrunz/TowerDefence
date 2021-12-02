@@ -68,6 +68,9 @@ public:
     int updateEnemiesPosition();
     std::vector<Enemy *> findEnemiesInTheArea(int x, int y, int r);         ///< Поиск врагов в зоне
     bool findRoad(int &x, int &y, int &direction) const;                    ///< Поиск клетки для хода врага
+    int getTypeOfBuilding(int x, int y) const;
+    int getCastleGold() const;
+    void towerUp(int x, int y);
 };
 
 

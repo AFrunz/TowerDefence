@@ -65,6 +65,10 @@ public:
 
     Landscape getLandscapeCopy(){return landscape;};    /// Получение копии ландшафта(для тестов)
 
+    int getTime(){
+        return timer.getTimeInUnits();
+    }
+
 /// Загрузка замка из потока
     Castle* loadCastle(std::istream &CastleInput){
         std::string name;
@@ -149,13 +153,69 @@ public:
 /// Начало игры
 /// Доработать setTimeout
     int startGame(){
+        int status = 1;
+        while (status != 0){
+            status = landscape.updateSituation(timer.getTimeInUnits());
+            landscape.updateEnemiesPosition();
+            timer.setTimeout(1);
+        }
+        return status;
+    }
+
+    int oneIter(){
         int status = landscape.updateSituation(timer.getTimeInUnits());
         landscape.updateEnemiesPosition();
-        if (status == 0) return 0;
-        createLog();
         timer.setTimeout(1);
-        status = this->startGame();
         return status;
+    }
+
+    void addTower(int x, int y){
+        Tower* tower = new BaseTower;
+        landscape.setBuilding(tower, y, x);
+    }
+
+    void towerUp(int x, int y){
+        landscape.towerUp(y, x);
+    }
+
+    void print(){
+        std::cout << "Time: " << timer.getTimeInUnits() << std::endl;
+        std::cout << "Gold on the Castle: " << landscape.getCastleGold() << std::endl;
+        for (int i = 0; i < landscape.getFieldSize(); i++){
+            for (int j = 0; j < landscape.getFieldSize(); j++){
+                if (landscape.getTypeOfField(i, j) == forest){
+                    if (landscape.getTypeOfBuilding(i, j) == lair_){
+                        std::cout << "|_L_|";
+                    }
+                    else if (landscape.getTypeOfBuilding(i, j) == castle_){
+                        std::cout << "|_C_|";
+                    }
+                    else{
+                        std::cout << "|_F_|";
+                    }
+                }
+                else if (landscape.getTypeOfField(i, j) == road){
+                    std::vector<Enemy*> en = landscape.findEnemiesInTheArea(i, j, 0);
+                    if (en.empty()){
+                        std::cout << "|_R_|";
+                    }
+                    else {
+                        std::cout << "|_" << en.front()->getCurrentHp() << "_|";
+                    }
+                }
+                else if (landscape.getTypeOfField(i, j) == field){
+                    if (landscape.getTypeOfBuilding(i, j) == tower_){
+                        std::cout << "|_T1_|";
+                    }
+                    else {
+                        std::cout << "|_I_|";
+                    }
+                }
+            }
+            std::cout << std::endl;
+        }
+
+
     }
 
 };
