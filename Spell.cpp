@@ -15,6 +15,19 @@ int Spell::getPower() const {
 }
 
 
+int Spell::setTime(int t) {
+    if (t < 0) return -1;
+    time = t;
+    return 0;
+}
+
+int Spell::setPower(int p) {
+    if (p < 0) return -1;
+    power = p;
+    return 0;
+}
+
+
 // Slowing Spell
 
 SlowingSpell::SlowingSpell():Spell(){}
@@ -22,7 +35,7 @@ SlowingSpell::SlowingSpell():Spell(){}
 SlowingSpell::SlowingSpell(int time, int power) : Spell(time, power) {}
 
 int SlowingSpell::getType() const {
-    return 1;
+    return slowing_;
 }
 
 //Poisoning spell
@@ -32,7 +45,7 @@ PoisoningSpell::PoisoningSpell():Spell() {}
 PoisoningSpell::PoisoningSpell(int time, int power) : Spell(time, power) {}
 
 int PoisoningSpell::getType() const {
-    return 2;
+    return poisoning_;
 }
 
 // Debilitation spell
@@ -43,5 +56,5 @@ DebilitationSpell::DebilitationSpell():Spell() {}
 DebilitationSpell::DebilitationSpell(int time, int power) : Spell(time, power) {}
 
 int DebilitationSpell::getType() const {
-    return 3;
+    return debilitation_;
 }

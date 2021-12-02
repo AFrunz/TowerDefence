@@ -16,7 +16,7 @@ private:
     int currentHp;               ///< Текущее здоровье
     int gold;                    ///< Количество золота
     int speed;                   ///< Скорость передвижения
-    std::list<Spell*> spellList;  ///< Таблица эффектов (мб заменена на multiset)
+    std::list<Spell*> spellList;  ///< Таблица эффектов
 
 public:
     // Конструкторы
@@ -33,7 +33,7 @@ public:
     int getDirection() const;                                       ///< Получение направления движения
     void move(int x_, int y_, int direction);                       ///< Перемещение на координаты (x,y)
     void reduceHp(int damage);                                      ///< Получить урон
-    void addSpell(Spell* spell);                                    ///< Добавить эффект
+    void addSpell(const Spell* spell);                                    ///< Добавить эффект
     void takeDamageFromPoison();
     virtual ~Enemy() = default;
 };

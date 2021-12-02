@@ -4,6 +4,8 @@
 #include <map>
 #include <fstream>
 
+
+
 /// Счетчик времени
 class Timer{
 private:
@@ -163,13 +165,13 @@ public:
     }
 
     int oneIter(){
-        int status = landscape.updateSituation(timer.getTimeInUnits());
-        landscape.updateEnemiesPosition();
+        int status1 = landscape.updateSituation(timer.getTimeInUnits());
+        int status2 = landscape.updateEnemiesPosition();
         timer.setTimeout(1);
-        return status;
+        return status1 * status2 ;
     }
 
-    void addTower(int x, int y){
+    void addBaseTower(int x, int y){
         Tower* tower = new BaseTower;
         landscape.setBuilding(tower, y, x);
     }
@@ -177,10 +179,15 @@ public:
     void towerUp(int x, int y){
         landscape.towerUp(y, x);
     }
+    void addTrap(int x, int y, int type){
+        Trap* trap = new Trap(type);
+        landscape.setBuilding(trap, y, x);
+    }
 
     void print(){
         std::cout << "Time: " << timer.getTimeInUnits() << std::endl;
         std::cout << "Gold on the Castle: " << landscape.getCastleGold() << std::endl;
+        std::cout << "Castle health: " << landscape.getCastleHealth() << std::endl;
         for (int i = 0; i < landscape.getFieldSize(); i++){
             for (int j = 0; j < landscape.getFieldSize(); j++){
                 if (landscape.getTypeOfField(i, j) == forest){
@@ -196,7 +203,10 @@ public:
                 }
                 else if (landscape.getTypeOfField(i, j) == road){
                     std::vector<Enemy*> en = landscape.findEnemiesInTheArea(i, j, 0);
-                    if (en.empty()){
+                    if (landscape.getTypeOfBuilding(i, j) == trap_){
+                        std::cout << "|_T_|";
+                    }
+                    else if (en.empty()){
                         std::cout << "|_R_|";
                     }
                     else {

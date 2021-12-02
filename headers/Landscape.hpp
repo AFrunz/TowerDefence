@@ -71,6 +71,7 @@ public:
     int getTypeOfBuilding(int x, int y) const;
     int getCastleGold() const;
     void towerUp(int x, int y);
+    int getCastleHealth() const;
 };
 
 

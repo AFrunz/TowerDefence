@@ -106,7 +106,7 @@ int Landscape::updateSituation(int time){
                 if (!enemiesInArea.empty()){
                     auto enemy = std::min_element(enemiesInArea.begin(), enemiesInArea.end(), [i, j](auto first, auto second){
 
-                        return (first->getX() - i) * (first->getX() - i) + (first->getY() - j) * (first->getY()) >
+                        return (first->getX() - i) * (first->getX() - i) + (first->getY() - j) * (first->getY()) <
                                (second->getX() - i) * (second->getX() - i) + (second->getY() - j) * (second->getY());
 
                     });
@@ -175,7 +175,7 @@ int Landscape::updateEnemiesPosition(){
         if (table[x][y].building && table[x][y].building->getType() == castle_){
             castle->damage(**enemyIter);
             enemyIter = enemies.erase(enemyIter);
-            if (castle->getCurrentHp() <= 0) return -1;
+            if (castle->getCurrentHp() <= 0) return 0;
             continue;
         }
         else {
@@ -280,6 +280,11 @@ void Landscape::towerUp(int x, int y) {
     if (table[x][y].building->getType() == tower_){
         dynamic_cast<Tower*>(table[x][y].building)->lvlUp();
     }
+}
+
+int Landscape::getCastleHealth() const{
+    Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
+    return castle->getCurrentHp();
 }
 
 

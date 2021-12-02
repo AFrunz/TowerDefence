@@ -51,8 +51,24 @@ int Enemy::getDirection() const{
     return direction;
 }
 /*/////////////////////////////////////////////*/
-void Enemy::addSpell(Spell *spell) {
-    spellList.push_back(spell);
+void Enemy::addSpell(const Spell* spell) {
+    if (spell) {
+        Spell *spell_ = nullptr;
+        if (spell->getType() == slowing_) {
+            spell_ = new SlowingSpell;
+        }
+        else if (spell->getType() == debilitation_){
+            spell_ = new DebilitationSpell;
+        }
+        else if (spell->getType() == poisoning_){
+            spell_ = new PoisoningSpell;
+        }
+        if (spell_) {
+            spell_->setPower(spell->getPower());
+            spell_->setTime(spell->getTime());
+            spellList.push_back(spell_);
+        }
+    }
 }
 
 void Enemy::takeDamageFromPoison() {

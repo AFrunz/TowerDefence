@@ -5,7 +5,17 @@
 
 Trap::Trap():spell(nullptr), radius(0){}
 
-Trap::Trap(Spell *spell_, int radius_):spell(spell_), radius(radius_){}
+Trap::Trap(int type, int radius_):radius(radius_){
+    if (type == poisoning_){
+        spell = new PoisoningSpell(POISONING_SPELL_TIME, POISONING_SPELL_POWER);
+    }
+    else if (type == slowing_){
+        spell = new SlowingSpell(SLOWING_SPELL_TIME, SLOWING_SPELL_POWER);
+    }
+    else if (type == debilitation_){
+        spell = new DebilitationSpell(DEBILITATION_SPELL_TIME, DEBILITATION_SPELL_POWER);
+    }
+}
 
 int Trap::getArea() const{
     return radius;

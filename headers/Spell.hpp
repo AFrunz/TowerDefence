@@ -2,6 +2,22 @@
 #define TOWERDEFENCE_SPELL_HPP
 #include <iostream>
 
+
+enum spellTypes{
+    slowing_ = 1,
+    poisoning_ = 2,
+    debilitation_ = 3
+};
+
+const int POISONING_SPELL_TIME = 2;
+const int DEBILITATION_SPELL_TIME = 2;
+const int SLOWING_SPELL_TIME = 2;
+const int POISONING_SPELL_POWER = 5;
+const int DEBILITATION_SPELL_POWER = 100;
+const int SLOWING_SPELL_POWER = 0;
+
+
+
 ///Эффект
 class Spell{
 protected:
@@ -11,12 +27,13 @@ protected:
 public:
     Spell();
     Spell(int time, int power);
+    Spell(const Spell& sp);
 
     virtual int getType() const = 0;        ///< Получение типа постройки
     int getTime() const;                    ///< Получение времени действия
     int getPower() const;                   ///< Получение мощности
-    int addTime(int t);                     ///< Добавление времени
-    int addPower(int p);                    ///< Добавление мощности ( в зависимости от условия)
+    int setTime(int t);                     ///< Добавление времени
+    int setPower(int p);                    ///< Добавление мощности ( в зависимости от условия)
 };
 
 
