@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 
 
 
@@ -57,3 +56,9 @@ int main() {
     std::cout << (clock() - timeStart) / CLOCKS_PER_SEC;
     return 0;
 }
+
+//int main(){
+//    int *p = new int;
+//    int a = (*(p + 1));
+//
+//}
