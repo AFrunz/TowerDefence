@@ -57,6 +57,7 @@ int MagicTower::hit(Enemy *target) {
 }
 
 MagicTower::MagicTower(int type):Tower() {
+    features = MagicTowerLVL[lvl];
     if (type == poisoning_){
         towerSpell = new PoisoningSpell(POISONING_SPELL_TIME, POISONING_SPELL_POWER);
     }
