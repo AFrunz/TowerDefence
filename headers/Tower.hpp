@@ -4,6 +4,7 @@
 #include "Spell.hpp"
 #include "Building.hpp"
 #include "Enemy.hpp"
+#include "settings.h"
 
 /// Характеристики башни
 class TowerFeature{
@@ -13,10 +14,9 @@ public:
     int price;          ///< Цена
 };
 
-const int MAX_LVL_OF_BASE_TOWER = 2;
-const int MAX_LVL_OF_MAGIC_TOWER = 2;
 const TowerFeature BaseTowerLVL[] = {{5, 1, 100}, {10, 2, 200}, {10, 3, 500}};
 const TowerFeature MagicTowerLVL[] = {{5, 1, 200}, {8, 1, 400}, {10, 2, 500}};
+
 
 ///Башня
 class Tower:public Building{
@@ -48,6 +48,7 @@ private:
     Spell* towerSpell;                      ///< Эффекты, накладываемые башней
 public:
     MagicTower();
+    MagicTower(int type);
     void lvlUp() override;                  ///< Повышение уровня
     int hit(Enemy* target) override;        ///< Нанесение урона врагу
 };

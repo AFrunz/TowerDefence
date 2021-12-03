@@ -3,6 +3,7 @@
 #include "Landscape.hpp"
 #include <map>
 #include <fstream>
+#include "settings.h"
 
 
 
@@ -55,7 +56,7 @@ public:
 // speed
 // time
 
-const std::string logFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefenceV2/settingFiles/log.txt";
+
 
 /// Общий класс-интерфейс
 class TowerDefence {
@@ -179,9 +180,15 @@ public:
     void towerUp(int x, int y){
         landscape.towerUp(y, x);
     }
+
     void addTrap(int x, int y, int type){
         Trap* trap = new Trap(type);
         landscape.setBuilding(trap, y, x);
+    }
+
+    void addMagicTower(int x, int y, int type){
+        Tower* tower = new MagicTower(type);
+        landscape.setBuilding(tower, y, x);
     }
 
     void print(){

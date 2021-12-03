@@ -1,16 +1,9 @@
 #include <iostream>
 
-
-
 #include "headers/TowerDefence.h"
 
 
-//const char* castleFileName = "settingFiles/castle.txt";
-//const char* mapFileName = "settingFiles/map.txt";
-//const char* lairFileName = "settingFiles/lair.txt";
-const std::string castleFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefenceV2/settingFiles/castle.txt";
-const std::string mapFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefenceV2/settingFiles/map.txt";
-const std::string lairFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefenceV2/settingFiles/lair.txt";
+
 
 
 
@@ -18,6 +11,8 @@ const std::string lairFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefen
 
 int main() {
     double timeStart = clock();
+    std::string dialogOptions = {"0. Quit\n1. Do iter\n2. Add Tower\n3. Add magic tower\n4. Upgrade Tower\n5. Add trap\n"};
+
 
     std::ifstream lairStream(lairFileName);
     std::ifstream castleStream(castleFileName);
@@ -29,28 +24,47 @@ int main() {
     int choice = -1;
     int flag = 1;
     td.print();
-    std::cout << "0.Quit\n1.Add Tower\n2.Upgrade Tower\n3.Do iter\n";
+    std::cout << dialogOptions;
     std::cin >> choice;
     while (choice != 0){
         if (choice == 1){
-            int x, y;
-            std::cout << "Enter x and y\n";
-            std::cin >> x >> y;
-            td.addBaseTower(x, y);
+            std::cout << td.getTime() << std::endl;
+            flag = td.oneIter();
+
         }
         else if (choice == 2){
             int x, y;
             std::cout << "Enter x and y\n";
             std::cin >> x >> y;
-            td.towerUp(x, y);
+            td.addBaseTower(x, y);
         }
         else if (choice == 3){
-            std::cout << td.getTime() << std::endl;
-            flag = td.oneIter();
+            int x, y;
+            std::cout << "Enter type:\n1 - slowing\n2 - poisoning\n3 - debilitation\n";
+            int type = 0;
+            std::cin >> type;
+            std::cout << "Enter x and y\n";
+            std::cin >> x >> y;
+            td.addMagicTower(x, y, type);
+        }
+        else if (choice == 4){
+            int x, y;
+            std::cout << "Enter x and y\n";
+            std::cin >> x >> y;
+            td.towerUp(x, y);
+        }
+        else if (choice == 5){
+            int x, y;
+            std::cout << "Enter type:\n1 - slowing\n2 - poisoning\n3 - debilitation\n";
+            int type = 0;
+            std::cin >> type;
+            std::cout << "Enter x and y\n";
+            std::cin >> x >> y;
+            td.addTrap(x, y, type);
         }
         td.print();
         if (flag == 0) return 0;
-        std::cout << "0.Quit\n1.Add Tower\n2.Upgrade Tower\n3.Do iter\n";
+        std::cout << dialogOptions;
         std::cin >> choice;
     }
 

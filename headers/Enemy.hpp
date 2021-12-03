@@ -33,7 +33,7 @@ public:
     int getDirection() const;                                       ///< Получение направления движения
     void move(int x_, int y_, int direction);                       ///< Перемещение на координаты (x,y)
     void reduceHp(int damage);                                      ///< Получить урон
-    void addSpell(const Spell* spell);                                    ///< Добавить эффект
+    void addSpell(const Spell* spell);                              ///< Добавить эффект
     void takeDamageFromPoison();
     virtual ~Enemy() = default;
 };

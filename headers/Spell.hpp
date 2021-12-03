@@ -1,20 +1,13 @@
 #ifndef TOWERDEFENCE_SPELL_HPP
 #define TOWERDEFENCE_SPELL_HPP
 #include <iostream>
-
+#include "settings.h"
 
 enum spellTypes{
     slowing_ = 1,
     poisoning_ = 2,
     debilitation_ = 3
 };
-
-const int POISONING_SPELL_TIME = 2;
-const int DEBILITATION_SPELL_TIME = 2;
-const int SLOWING_SPELL_TIME = 2;
-const int POISONING_SPELL_POWER = 5;
-const int DEBILITATION_SPELL_POWER = 100;
-const int SLOWING_SPELL_POWER = 0;
 
 
 

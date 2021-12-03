@@ -4,9 +4,8 @@
 #include "Building.hpp"
 #include "Spell.hpp"
 #include "Enemy.hpp"
+#include "settings.h"
 
-const int TRAP_TIME = 2;
-const int TRAP_RADIUS = 2;
 
 
 /// Ловушка

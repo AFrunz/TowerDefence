@@ -1,13 +1,6 @@
 #include "headers/Landscape.hpp"
 #include <cmath>
-// Сделать чтение из файла(скорее всего не здесь)
-// Подумать над таймером
 
-
-//private:
-//int fieldSize;                                   /// Величина игрового поля
-//std::list<Enemy*> enemies;                       /// Позиции врагов
-//std::list<std::list<Field>> table;           /// Информация об игровом поле
 
 Landscape::Landscape():fieldSize(0), table(), xCastle(-1), yCastle(-1){}
 
@@ -144,16 +137,16 @@ int Landscape::updateSituation(int time){
 
     auto enemyIter = enemies.begin();
     while (enemyIter != enemies.end()){
+        (*enemyIter)->takeDamageFromPoison();
         if ((*enemyIter)->getCurrentHp() <= 0){
+            castle->increaseGold(**enemyIter);
             enemyIter = enemies.erase(enemyIter);
             continue;
         }
-        (*enemyIter)->takeDamageFromPoison();
         enemyIter++;
     }
 
     if (!hasEnemiesInLayers && enemies.empty()) return 0;
-
     return 1;
 
 }

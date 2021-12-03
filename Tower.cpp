@@ -55,3 +55,15 @@ int MagicTower::hit(Enemy *target) {
     target->addSpell(towerSpell);
     return 0;
 }
+
+MagicTower::MagicTower(int type):Tower() {
+    if (type == poisoning_){
+        towerSpell = new PoisoningSpell(POISONING_SPELL_TIME, POISONING_SPELL_POWER);
+    }
+    else if (type == slowing_){
+        towerSpell = new SlowingSpell(SLOWING_SPELL_TIME, SLOWING_SPELL_POWER);
+    }
+    else if (type == debilitation_){
+        towerSpell = new DebilitationSpell(DEBILITATION_SPELL_TIME, DEBILITATION_SPELL_POWER);
+    }
+}

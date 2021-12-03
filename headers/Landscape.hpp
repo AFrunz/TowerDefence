@@ -15,19 +15,6 @@
 
 
 
-
-// Побочный класс для хранения сведений о позиции врага
-//struct UnitPos{
-//    double x, y;
-//    Enemy* enemy;
-//    UnitPos():x(0), y(0), enemy(nullptr){};
-//    UnitPos(double x, double y, Enemy* t){
-//        this->x = x;
-//        this->y = y;
-//        enemy = t;
-//    }
-//};
-
 /// Побочный класс для хранения сведений о клетке поля
 struct Field{
     int type;                           ///< Тип клетки
