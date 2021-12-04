@@ -2,6 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
+
+
 namespace gm {
     void loadMap(TowerDefence& td){
         std::ifstream lairStream(lairFileName);
@@ -20,17 +24,50 @@ namespace ts{
             std::cout << "Error\n";
         }
         sprite.setTexture(backgroundTexture);
+        window.draw(sprite);
     }
+
+    sf::Sprite getForestTexture();
+    sf::Sprite getLairTexture();
+    sf::Sprite getCastleTexture();
+
+
     void mapTextureLoad(sf::RenderWindow& window, TowerDefence& td){
+        sf::Sprite sprite;
+        sf::RectangleShape borderOfMap(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
+        borderOfMap.move(WINDOW_WIDTH * 0.07, WINDOW_HEIGHT * 0.2);
+
         Landscape landscape = td.getLandscapeCopy();
+        for (auto it = landscape.begin(); it != landscape.end(); it++){
+            if ((*it).type == forest){
+                if ((*it).building){
+                    if ((*it).building->getType() == castle_){
+                        getCastleTexture();
+                        //
+                    }
+                    else {
+                        getLairTexture();
+                        //
+
+                    }
+                }
+                else {
+                    getForestTexture();
+                }
+            }
+            else if ((*it).type == road){
+                getRoadTexture();
+                //
+            }
+            else if ((*))
+
+
+        }
 
 
 
+        window.draw(borderOfMap);
     }
-    void
-
-
-
 
 }
 
@@ -47,7 +84,7 @@ int main(){
 
 
 //  Инициализация окна
-    sf::RenderWindow window(sf::VideoMode(800, 600), "TowerDefence");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "TowerDefence");
     window.setVerticalSyncEnabled(true);
 
 

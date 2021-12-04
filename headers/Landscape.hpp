@@ -21,9 +21,7 @@ struct Field{
     Building* building;                 ///< Строение, стоящее на этой клетке
     Field():type(0), building(nullptr){};
     Field(int type_, Building* building_):type(type_), building(building_){};
-    ~Field(){
-        delete building;
-    }
+    ~Field() = default;
 };
 
 /// Типы клеток
@@ -32,6 +30,9 @@ enum FieldTypes{
     field = 2,
     forest = 3
 };
+
+
+
 
 /// Ландшафт
 class Landscape{
@@ -45,7 +46,51 @@ private:
 public:
     Landscape();
     Landscape(int n);
+    class iterator{
+    private:
+        int x, y, size;
+        std::vector<std::vector<Field>> *table;
+    public:
+        iterator() = default;
+        friend class Landscape;
+        const Field& operator* (){
+            if (x < size){
+                return (*table)[x][y];
+            }
+            else {
+                x = 0;
+                y++;
+                return (*table)[x][y];
+            }
+        }
+        iterator& operator++ (){
+            x++;
+            if (x == size){
+                x = 0;
+                y++;
+            }
+            return *this;
+        }
 
+        iterator& operator++ (int){
+            x++;
+            if (x == size){
+                x = 0;
+                y++;
+            }
+            return *this;
+        }
+
+        friend bool operator== (const iterator& a, const iterator& b){
+            return (a.x == b.x) && (a.y == b.y) && (a.size == b.size) && (a.table == b.table);
+        }
+
+        friend bool operator!= (const iterator& a, const iterator& b){
+            return (a.x == b.x) && (a.y == b.y) && (a.size == b.size) && (a.table == b.table);
+        }
+
+        ~iterator() = default;
+    };
     int getFieldSize() const;                                               ///< Получение размеров поля
     void setFieldSize(int n);                                               ///< Установка размеров поля
     int getTypeOfField(int x, int y) const;                                 ///< Получение типа клетки
@@ -63,8 +108,27 @@ public:
     int towerUp(int x, int y);
     int getCastleHealth() const;
     void decreaseCastleGold(int gold);
+    iterator begin(){
+        iterator it;
+        it.x = 0;
+        it.y = 0;
+        it.table = &table;
+        it.size = fieldSize;
+        return it;
+    }
+    iterator end(){
+        iterator it;
+        it.x = fieldSize;
+        it.y = fieldSize;
+        it.table = &table;
+        it.size = fieldSize;
+        return it;
+    }
+
     ~Landscape();
 };
+
+
 
 
 #endif //TOWERDEFENCE_LANDSCAPE_HPP
