@@ -27,6 +27,7 @@ public:
     int getPower() const;                   ///< Получение мощности
     int setTime(int t);                     ///< Добавление времени
     int setPower(int p);                    ///< Добавление мощности ( в зависимости от условия)
+    void decreaseTime(int t = 1);
 };
 
 

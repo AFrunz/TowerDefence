@@ -5,7 +5,7 @@
 //Trap
 const int TRAP_TIME = 2;
 const int TRAP_RADIUS = 2;
-
+const int TRAP_PRICE = 10;
 //Spell
 
 const int POISONING_SPELL_TIME = 2;

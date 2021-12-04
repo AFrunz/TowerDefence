@@ -26,10 +26,11 @@ BaseTower::BaseTower():Tower(){
     features = BaseTowerLVL[lvl];
 }
 
-void BaseTower::lvlUp() {
-    if (lvl == MAX_LVL_OF_BASE_TOWER) return;
+int BaseTower::lvlUp() {
+    if (lvl == MAX_LVL_OF_BASE_TOWER) return -1;
     lvl++;
     features = BaseTowerLVL[lvl];
+    return 0;
 }
 
 int BaseTower::hit(Enemy *target) {
@@ -38,14 +39,26 @@ int BaseTower::hit(Enemy *target) {
     return 0;
 }
 
+int BaseTower::getPrice(int lvl) {
+    if (lvl <= MAX_LVL_OF_BASE_TOWER){
+        return BaseTowerLVL[lvl].price;
+    }
+    return 0;
+}
+
+int BaseTower::getTowerType() const {
+    return basic_;
+}
+
 MagicTower::MagicTower():Tower(){
     features = MagicTowerLVL[lvl];
 }
 
-void MagicTower::lvlUp() {
-    if (lvl == MAX_LVL_OF_MAGIC_TOWER) return;
+int MagicTower::lvlUp() {
+    if (lvl == MAX_LVL_OF_MAGIC_TOWER) return -1;
     lvl++;
     features = MagicTowerLVL[lvl];
+    return 0;
 }
 
 
@@ -68,3 +81,15 @@ MagicTower::MagicTower(int type):Tower() {
         towerSpell = new DebilitationSpell(DEBILITATION_SPELL_TIME, DEBILITATION_SPELL_POWER);
     }
 }
+
+int MagicTower::getPrice(int lvl) {
+    if (lvl <= MAX_LVL_OF_MAGIC_TOWER){
+        return MagicTowerLVL[lvl].price;
+    }
+    return 0;
+}
+
+int MagicTower::getTowerType() const {
+    return magic_;
+}
+

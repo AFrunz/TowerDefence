@@ -35,6 +35,8 @@ public:
     void reduceHp(int damage);                                      ///< Получить урон
     void addSpell(const Spell* spell);                              ///< Добавить эффект
     void takeDamageFromPoison();
+    void decreaseSpellTime();
+    int getIncreasedDamageInPercents() const;
     virtual ~Enemy() = default;
 };
 

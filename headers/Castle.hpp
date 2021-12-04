@@ -24,6 +24,7 @@ public:
     std::string getName() const;                    ///< Получение имени замка
     void damage(const Enemy& enemy);                ///< "Ударить" замок
     void increaseGold(const Enemy& enemy);          ///< Добавить золота в казну
+    void decreaseGold(int gold_);
     virtual ~Castle() = default;
 };
 

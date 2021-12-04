@@ -27,7 +27,8 @@ int Enemy::getSpeed() const {
 }
 
 void Enemy::reduceHp(int damage) {
-    currentHp -= damage;
+    int power = getIncreasedDamageInPercents();
+    currentHp -= static_cast<int>(damage * power / 100);
     if (currentHp < 0) currentHp = 0;
 }
 
@@ -66,14 +67,34 @@ void Enemy::addSpell(const Spell* spell) {
 void Enemy::takeDamageFromPoison() {
     auto it = spellList.begin();
     while (it != spellList.end()){
-        if ((*it)->getTime() <= 0){
-            it = spellList.erase(it);
-            continue;
-        }
-        if ((*it)->getType() == 2){
+        if ((*it)->getType() == poisoning_){
             currentHp -= (*it)->getPower();
             if (currentHp < 0) currentHp = 0;
         }
         it++;
     }
+}
+
+void Enemy::decreaseSpellTime() {
+    auto it = spellList.begin();
+    while (it != spellList.end()){
+        (*it)->decreaseTime();
+        if ((*it)->getTime() <= 0){
+            it = spellList.erase(it);
+            continue;
+        }
+        it++;
+    }
+}
+
+int Enemy::getIncreasedDamageInPercents() const{
+    auto it = spellList.begin();
+    int percents = 100;
+    while (it != spellList.end()){
+        if ((*it)->getType() == debilitation_){
+            percents += (*it)->getPower();
+        }
+        it++;
+    }
+    return percents;
 }

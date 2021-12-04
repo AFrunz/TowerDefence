@@ -57,8 +57,9 @@ public:
     bool findRoad(int &x, int &y, int &direction) const;                    ///< Поиск клетки для хода врага
     int getTypeOfBuilding(int x, int y) const;
     int getCastleGold() const;
-    void towerUp(int x, int y);
+    int towerUp(int x, int y);
     int getCastleHealth() const;
+    void decreaseCastleGold(int gold);
 };
 
 

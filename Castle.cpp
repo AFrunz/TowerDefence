@@ -43,3 +43,8 @@ void Castle::increaseGold(const Enemy &enemy) {
     int enemyGold = enemy.getGold();
     gold += enemyGold;
 }
+
+void Castle::decreaseGold(int gold_) {
+    gold -= gold_;
+    if (gold < 0) gold = 0;
+}

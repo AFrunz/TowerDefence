@@ -27,6 +27,11 @@ int Spell::setPower(int p) {
     return 0;
 }
 
+void Spell::decreaseTime(int t) {
+    time -= t;
+    if (time < 0) time = 0;
+}
+
 
 // Slowing Spell
 

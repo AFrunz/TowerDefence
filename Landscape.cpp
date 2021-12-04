@@ -2,6 +2,13 @@
 #include <cmath>
 
 
+enum answers{
+    ST_OK = 0,
+    NOT_ENOUGH_MONEY = 1,
+    EROR = 2
+};
+
+
 Landscape::Landscape():fieldSize(0), table(), xCastle(-1), yCastle(-1){}
 
 Landscape::Landscape(int n):fieldSize(n), table(n, std::vector<Field>(n)), xCastle(-1), yCastle(-1){}
@@ -138,6 +145,7 @@ int Landscape::updateSituation(int time){
     auto enemyIter = enemies.begin();
     while (enemyIter != enemies.end()){
         (*enemyIter)->takeDamageFromPoison();
+        (*enemyIter)->decreaseSpellTime();
         if ((*enemyIter)->getCurrentHp() <= 0){
             castle->increaseGold(**enemyIter);
             enemyIter = enemies.erase(enemyIter);
@@ -268,11 +276,27 @@ int Landscape::getCastleGold() const{
     return castle->getGold();
 }
 
-void Landscape::towerUp(int x, int y) {
-    if (!table[x][y].building) return;
+void Landscape::decreaseCastleGold(int gold){
+    Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
+    castle->decreaseGold(gold);
+}
+
+int Landscape::towerUp(int x, int y) {
+    if (!table[x][y].building) return EROR;
     if (table[x][y].building->getType() == tower_){
-        dynamic_cast<Tower*>(table[x][y].building)->lvlUp();
+        Tower* tower = dynamic_cast<Tower*>(table[x][y].building);
+        if (tower->getTowerType() == basic_ && getCastleGold() >= BaseTower::getPrice(tower->getLvl())){
+            int result = tower->lvlUp();
+            if (!result) decreaseCastleGold(BaseTower::getPrice(tower->getLvl() + 1));
+        }
+        else if (tower->getType() == magic_ && getCastleGold() >= MagicTower::getPrice(tower->getLvl())){
+            int result = tower->lvlUp();
+            if (!result) decreaseCastleGold(BaseTower::getPrice(tower->getLvl() + 1));
+        }
+        else return NOT_ENOUGH_MONEY;
     }
+    else return EROR;
+    return ST_OK;
 }
 
 int Landscape::getCastleHealth() const{

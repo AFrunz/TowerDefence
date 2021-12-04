@@ -173,22 +173,31 @@ public:
     }
 
     void addBaseTower(int x, int y){
-        Tower* tower = new BaseTower;
-        landscape.setBuilding(tower, y, x);
+        if (landscape.getCastleGold() >= BaseTower::getPrice(0)){
+            Tower* tower = new BaseTower;
+            landscape.setBuilding(tower, y, x);
+            landscape.decreaseCastleGold(BaseTower::getPrice(0));
+        }
     }
 
     void towerUp(int x, int y){
-        landscape.towerUp(y, x);
+        int status = landscape.towerUp(y, x);
     }
 
     void addTrap(int x, int y, int type){
-        Trap* trap = new Trap(type);
-        landscape.setBuilding(trap, y, x);
+        if (landscape.getCastleGold() >= TRAP_PRICE){
+            Trap* trap = new Trap(type);
+            landscape.setBuilding(trap, y, x);
+            landscape.decreaseCastleGold(TRAP_PRICE);
+        }
     }
 
     void addMagicTower(int x, int y, int type){
-        Tower* tower = new MagicTower(type);
-        landscape.setBuilding(tower, y, x);
+        if (landscape.getCastleGold() >= MagicTower::getPrice(0)){
+            Tower* tower = new MagicTower(type);
+            landscape.setBuilding(tower, y, x);
+            landscape.decreaseCastleGold(MagicTower::getPrice(0));
+        }
     }
 
     void print(){
