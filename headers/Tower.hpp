@@ -37,6 +37,7 @@ public:
     int getArea() const;                    ///< Получение радиуса обстрела
     virtual int lvlUp() = 0;               ///< Повышение уровня
     virtual int hit(Enemy* target) = 0;     ///< Нанесение урона врагу
+    virtual ~Tower() = default;
 };
 
 /// Обычная башня
@@ -61,6 +62,7 @@ public:
     static int getPrice(int lvl);
     int lvlUp() override;                  ///< Повышение уровня
     int hit(Enemy* target) override;        ///< Нанесение урона врагу
+    virtual ~MagicTower();
 };
 
 

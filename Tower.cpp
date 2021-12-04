@@ -22,6 +22,7 @@ int Tower::getArea() const {
     return features.radius;
 }
 
+
 BaseTower::BaseTower():Tower(){
     features = BaseTowerLVL[lvl];
 }
@@ -91,5 +92,9 @@ int MagicTower::getPrice(int lvl) {
 
 int MagicTower::getTowerType() const {
     return magic_;
+}
+
+MagicTower::~MagicTower() {
+    delete towerSpell;
 }
 

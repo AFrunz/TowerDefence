@@ -80,6 +80,7 @@ void Enemy::decreaseSpellTime() {
     while (it != spellList.end()){
         (*it)->decreaseTime();
         if ((*it)->getTime() <= 0){
+            delete (*it);
             it = spellList.erase(it);
             continue;
         }
@@ -97,4 +98,12 @@ int Enemy::getIncreasedDamageInPercents() const{
         it++;
     }
     return percents;
+}
+
+Enemy::~Enemy() {
+    auto it = spellList.begin();
+    while (it != spellList.end()){
+        delete (*it);
+        it++;
+    }
 }

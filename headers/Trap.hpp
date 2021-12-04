@@ -18,7 +18,7 @@ public:
     int getType() const;                        ///< Получение типа здания
     int getArea() const;                        ///< Получение радиуса поражения
     int hit(Enemy* target);                     ///< Наложить эффект на врага
-    virtual ~Trap() = default;
+    virtual ~Trap();
 };
 
 

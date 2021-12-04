@@ -50,3 +50,9 @@ void Lair::pushEnemy(EnemyTime ceil) {
     sort();
 }
 
+Lair::~Lair() {
+    for (auto enemy : timetable){
+        delete enemy.enemy;
+    }
+}
+

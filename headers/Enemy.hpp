@@ -37,7 +37,7 @@ public:
     void takeDamageFromPoison();
     void decreaseSpellTime();
     int getIncreasedDamageInPercents() const;
-    virtual ~Enemy() = default;
+    virtual ~Enemy();
 };
 
 

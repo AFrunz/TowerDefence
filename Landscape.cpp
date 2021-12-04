@@ -148,6 +148,7 @@ int Landscape::updateSituation(int time){
         (*enemyIter)->decreaseSpellTime();
         if ((*enemyIter)->getCurrentHp() <= 0){
             castle->increaseGold(**enemyIter);
+            delete (*enemyIter);
             enemyIter = enemies.erase(enemyIter);
             continue;
         }
@@ -175,6 +176,7 @@ int Landscape::updateEnemiesPosition(){
         findRoad(x, y, direction);
         if (table[x][y].building && table[x][y].building->getType() == castle_){
             castle->damage(**enemyIter);
+            delete *enemyIter;
             enemyIter = enemies.erase(enemyIter);
             if (castle->getCurrentHp() <= 0) return 0;
             continue;
@@ -303,5 +305,13 @@ int Landscape::getCastleHealth() const{
     Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
     return castle->getCurrentHp();
 }
+
+Landscape::~Landscape() {
+    for (auto it = enemies.begin(); it != enemies.end(); it++){
+        delete *it;
+    }
+
+}
+
 
 

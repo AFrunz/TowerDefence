@@ -31,5 +31,9 @@ int Trap::getType() const{
     return 4;
 }
 
+Trap::~Trap() {
+    delete spell;
+}
+
 
 

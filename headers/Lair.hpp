@@ -19,8 +19,7 @@ struct EnemyTime{
     EnemyTime(std::string name_, int maxHp_, int gold_, int speed_, int time_):time(time_){
         enemy = new Enemy(name_, maxHp_, gold_, speed_);
     }
-
-
+    ~EnemyTime() = default;
 };
 
 
@@ -36,7 +35,7 @@ public:
     Enemy* releaseEnemy(int time);      ///< Выпустить врага
     void pushEnemy(EnemyTime ceil);     ///< Поместить врага в таблицу
     bool hasEnemies() const;            ///< Указывает наличие врагов в таблице
-    virtual ~Lair() = default;
+    virtual ~Lair();
 };
 
 #endif //TOWERDEFENCE_LAIR_HPP

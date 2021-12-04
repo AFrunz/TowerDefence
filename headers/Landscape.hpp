@@ -21,6 +21,9 @@ struct Field{
     Building* building;                 ///< Строение, стоящее на этой клетке
     Field():type(0), building(nullptr){};
     Field(int type_, Building* building_):type(type_), building(building_){};
+    ~Field(){
+        delete building;
+    }
 };
 
 /// Типы клеток
@@ -60,6 +63,7 @@ public:
     int towerUp(int x, int y);
     int getCastleHealth() const;
     void decreaseCastleGold(int gold);
+    ~Landscape();
 };
 
 

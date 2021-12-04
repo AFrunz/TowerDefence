@@ -28,6 +28,7 @@ public:
     int setTime(int t);                     ///< Добавление времени
     int setPower(int p);                    ///< Добавление мощности ( в зависимости от условия)
     void decreaseTime(int t = 1);
+    virtual ~Spell() = default;
 };
 
 
@@ -38,6 +39,7 @@ public:
     SlowingSpell();
     SlowingSpell(int time, int power);
     virtual int getType() const;            ///< Получение типа постройки
+    virtual ~SlowingSpell() = default;
 };
 
 ///Отравляющий эффект
@@ -47,6 +49,7 @@ public:
     PoisoningSpell();
     PoisoningSpell(int time, int power);
     int getType() const;                    ///< Получение типа постройки
+    virtual ~PoisoningSpell() = default;
 };
 
 ///Ослабляющий эффект
@@ -56,6 +59,7 @@ public:
     DebilitationSpell();
     DebilitationSpell(int time, int power);
     int getType() const;                    ///< Получение типа постройки
+    virtual ~DebilitationSpell() = default;
 };
 
 
