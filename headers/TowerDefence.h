@@ -67,6 +67,14 @@ public:
     TowerDefence():landscape(), timer(){};
 
     Landscape getLandscapeCopy(){return landscape;};    /// Получение копии ландшафта(для тестов)
+    Landscape::iterator begin(){
+        return landscape.begin();
+    }
+    Landscape::iterator end(){
+        return landscape.end();
+    }
+
+
 
     int getTime(){
         return timer.getTimeInUnits();

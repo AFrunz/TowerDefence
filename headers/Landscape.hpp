@@ -53,6 +53,15 @@ public:
     public:
         iterator() = default;
         friend class Landscape;
+        int getX() const{
+            return y;
+        }
+        int getY() const{
+            return x;
+        }
+        int getSize() const{
+            return size;
+        }
         const Field& operator* (){
             if (x < size){
                 return (*table)[x][y];
@@ -86,7 +95,7 @@ public:
         }
 
         friend bool operator!= (const iterator& a, const iterator& b){
-            return (a.x == b.x) && (a.y == b.y) && (a.size == b.size) && (a.table == b.table);
+            return (a.x != b.x) || (a.y != b.y) || (a.size != b.size) || (a.table != b.table);
         }
 
         ~iterator() = default;
@@ -118,7 +127,7 @@ public:
     }
     iterator end(){
         iterator it;
-        it.x = fieldSize;
+        it.x = 0;
         it.y = fieldSize;
         it.table = &table;
         it.size = fieldSize;
