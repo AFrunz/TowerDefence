@@ -310,7 +310,6 @@ Landscape::~Landscape() {
     for (auto it = enemies.begin(); it != enemies.end(); it++){
         delete *it;
     }
-
 }
 
 
