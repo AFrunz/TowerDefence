@@ -1,6 +1,21 @@
 #ifndef TOWERDEFENCE_SETTINGS_H
 #define TOWERDEFENCE_SETTINGS_H
 
+//TextureLoader
+
+const float WINDOW_WIDTH = 800;
+const float WINDOW_HEIGHT = 600;
+
+//const float WINDOW_WIDTH = 1920;
+//const float WINDOW_HEIGHT = 1080;
+
+const float MAP_OFFSET_X = WINDOW_WIDTH * 0.07;
+const float MAP_OFFSET_Y = WINDOW_HEIGHT * 0.2;
+const float MAP_SIZE = WINDOW_HEIGHT / 2;
+//const float MAP_HEIGHT = WINDOW_WIDTH / 2;
+
+
+
 
 //Trap
 const int TRAP_TIME = 2;
@@ -29,6 +44,9 @@ const std::string logFileName = "/mnt/c/Users/frunz/Desktop/c_or_c++/TowerDefenc
 const int MAX_LVL_OF_BASE_TOWER = 2;
 const int MAX_LVL_OF_MAGIC_TOWER = 2;
 
+//Enemy
+
+const std::string ENEMY_TEXTURE_PATH = "bin/content/textures/Enemy.png";
 
 
 #endif //TOWERDEFENCE_SETTINGS_H

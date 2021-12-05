@@ -4,7 +4,8 @@
 #include <map>
 #include <fstream>
 #include "settings.h"
-
+#include "TextureLoader.hpp"
+//#include "headers/TextureLoader.hpp"
 
 
 /// Счетчик времени
@@ -21,40 +22,7 @@ public:
     void setSpeed(double speed_ = 1);   /// Установка скорости течения времени
 };
 
-// Побочный класс для хранения сведений о клетке поля
-//struct Field{
-//    int type;
-//    Building* building;
-//    Field():type(0), building(nullptr){};
-//    Field(int type_, Building* building_):type(type_), building(building_){};
-//};
-//
-// Типы клеток(убрать)
-//enum FieldTypes{
-//    road = 1,
-//    field = 2,
-//    forest = 3
-//};
-//L - layer
-//        F - forest
-//        R - road
-//        C - castle
-//        I - field
-// map:
-// 2FFFF
 
-// Castle:
-// name\n
-// maxHp
-// gold
-
-// Lair
-// count
-// name
-// maxhp
-// gold
-// speed
-// time
 
 
 
@@ -63,8 +31,9 @@ class TowerDefence {
 private:
     Landscape landscape;                        /// Ландшафт
     Timer timer;                                /// Счетчик времени
+    TextureLoader tl;
 public:
-    TowerDefence():landscape(), timer(){};
+    TowerDefence(sf::RenderWindow& window):landscape(), timer(), tl(&window){};
 
     Landscape getLandscapeCopy(){return landscape;};    /// Получение копии ландшафта(для тестов)
     Landscape::iterator begin(){
@@ -96,7 +65,7 @@ public:
     }
 
 /// Загрузка логова из потока
-    Lair* loadLair(std::istream &LairInput){
+    Lair* loadLair(std::istream &LairInput, sf::RenderWindow *window_){
         int num;                // Количество врагов в логове
         LairInput >> num;
         Lair* lair = new Lair;
@@ -114,7 +83,7 @@ public:
             if (!LairInput.good() || LairInput.eof()) throw std::runtime_error("Bad lair file\n");
             LairInput >> time;
             if (!LairInput.good()) throw std::runtime_error("Bad lair file\n");
-            EnemyTime ceil(name, maxHp, gold, speed, time);
+            EnemyTime ceil(name, maxHp, gold, speed, time, window_);
             lair->pushEnemy(ceil);
         }
         return lair;
@@ -146,13 +115,16 @@ public:
                     landscape.setBuilding(castle, i, j);
                 }
                 else if (check == 'L'){
-                    Lair* lair = loadLair(LairInput);
+                    Lair* lair = loadLair(LairInput, tl.getWindow());
                     landscape.setTypeOfField(i, j, forest);
                     landscape.setBuilding(lair, i, j);
                 }
             }
         }
         landscape.checkCorrect();
+        tl.mapTextureInitial(landscape);
+        tl.backgroundTextureDraw();
+        tl.mapTextureDraw();
     }
 
 /// Создание лога
@@ -166,18 +138,19 @@ public:
     int startGame(){
         int status = 1;
         while (status != 0){
-            status = landscape.updateSituation(timer.getTimeInUnits());
             landscape.updateEnemiesPosition();
-            timer.setTimeout(1);
+            status = landscape.updateSituation(timer.getTimeInUnits());
+            timer.setTimeout(0);
         }
         return status;
     }
 
     int oneIter(){
-        int status1 = landscape.updateSituation(timer.getTimeInUnits());
+        tl.mapTextureDraw();
         int status2 = landscape.updateEnemiesPosition();
-        timer.setTimeout(1);
-        return status1 * status2 ;
+        int status1 = landscape.updateSituation(timer.getTimeInUnits());
+        timer.setTimeout(0);
+        return !(status1 * status2);
     }
 
     void addBaseTower(int x, int y){
@@ -253,6 +226,8 @@ public:
     }
 
 };
+
+
 
 
 #endif //TOWERDEFENCE_TOWERDEFENCE_H

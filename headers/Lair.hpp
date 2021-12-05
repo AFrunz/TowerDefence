@@ -5,6 +5,7 @@
 #include "Enemy.hpp"
 #include "Building.hpp"
 #include <list>
+#include <SFML/Graphics.hpp>
 //#include "list.hpp"
 using std::list;
 
@@ -16,8 +17,8 @@ struct EnemyTime{
     Enemy* enemy;               ///< Указатель на врага
     int time;                   ///< Время выхода
     EnemyTime() = default;
-    EnemyTime(std::string name_, int maxHp_, int gold_, int speed_, int time_):time(time_){
-        enemy = new Enemy(name_, maxHp_, gold_, speed_);
+    EnemyTime(std::string name_, int maxHp_, int gold_, int speed_, int time_, sf::RenderWindow *window_):time(time_){
+        enemy = new Enemy(name_, maxHp_, gold_, speed_, window_);
     }
     ~EnemyTime() = default;
 };

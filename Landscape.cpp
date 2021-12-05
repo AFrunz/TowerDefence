@@ -119,6 +119,7 @@ int Landscape::updateSituation(int time){
                 int y = j;
                 int direction = 0;
                 findRoad(x, y, direction);
+                std::cout << "Enemy in lair:" << x << y << direction << std::endl;
                 Lair* lair = dynamic_cast<Lair*>(table[i][j].building);
                 hasEnemiesInLayers = hasEnemiesInLayers || lair->hasEnemies();
                 Enemy* enemy = lair->releaseEnemy(time);
@@ -135,7 +136,7 @@ int Landscape::updateSituation(int time){
                     }
                 }
                 else {
-                    enemy->move(x, y, direction);
+                    enemy->move(x, y, direction, fieldSize);
                     enemies.push_back(enemy);
                 }
             }
@@ -155,8 +156,8 @@ int Landscape::updateSituation(int time){
         enemyIter++;
     }
 
-    if (!hasEnemiesInLayers && enemies.empty()) return 0;
-    return 1;
+    if (!hasEnemiesInLayers && enemies.empty()) return 1;
+    return 0;
 
 }
 
@@ -170,15 +171,12 @@ int Landscape::updateEnemiesPosition(){
         int x = (*enemyIter)->getX();
         int y = (*enemyIter)->getY();
         int direction = (*enemyIter)->getDirection();
-//        std::cout << (*enemyIter)->getName() << std::endl;
-//        std::cout << (*enemyIter)->getCurrentHp() << std::endl;
-//        std::cout << x << " " << y << " " << direction << std::endl;
         findRoad(x, y, direction);
         if (table[x][y].building && table[x][y].building->getType() == castle_){
             castle->damage(**enemyIter);
             delete *enemyIter;
             enemyIter = enemies.erase(enemyIter);
-            if (castle->getCurrentHp() <= 0) return 0;
+            if (castle->getCurrentHp() <= 0) return 1;
             continue;
         }
         else {
@@ -192,12 +190,12 @@ int Landscape::updateEnemiesPosition(){
                 delete trap;
                 table[x][y].building = nullptr;
             }
-            (*enemyIter)->move(x, y, direction);
+            (*enemyIter)->move(x, y, direction, fieldSize);
         }
         enemyIter++;
     }
-    if (enemies.empty()) return 0;
-    return -1;
+    if (enemies.empty()) return -1;
+    return 0;
 }
 
 
