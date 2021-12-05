@@ -3,8 +3,8 @@
 
 //TextureLoader
 
-const float WINDOW_WIDTH = 800;
-const float WINDOW_HEIGHT = 600;
+const float WINDOW_WIDTH = 1600;
+const float WINDOW_HEIGHT = 900;
 
 //const float WINDOW_WIDTH = 1920;
 //const float WINDOW_HEIGHT = 1080;
@@ -12,6 +12,19 @@ const float WINDOW_HEIGHT = 600;
 const float MAP_OFFSET_X = WINDOW_WIDTH * 0.07;
 const float MAP_OFFSET_Y = WINDOW_HEIGHT * 0.2;
 const float MAP_SIZE = WINDOW_HEIGHT / 2;
+
+const float INTERFACE_OFFSET_X = WINDOW_WIDTH * 0.5;
+const float INTERFACE_OFFSET_Y = MAP_OFFSET_Y;
+
+const float TIMER_OFFSET_X = WINDOW_WIDTH * 0.07;
+const float TIMER_OFFSET_Y = WINDOW_HEIGHT * 0.02;
+
+const float GOLD_OFFSET_X = WINDOW_WIDTH * 0.07;
+const float GOLD_OFFSET_Y = TIMER_OFFSET_Y + 50;
+
+const float HEALTH_OFFSET_X = WINDOW_WIDTH * 0.07;
+const float HEALTH_OFFSET_Y = GOLD_OFFSET_Y + 50;
+
 //const float MAP_HEIGHT = WINDOW_WIDTH / 2;
 
 

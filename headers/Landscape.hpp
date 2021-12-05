@@ -10,6 +10,7 @@
 #include <list>
 #include <vector>
 #include <ctime>
+//#include "TextureLoader.hpp"
 
 
 
@@ -33,7 +34,7 @@ enum FieldTypes{
 };
 
 
-
+class TextureLoader;
 
 /// Ландшафт
 class Landscape{
@@ -109,8 +110,8 @@ public:
     void setBuilding(Building* building, int x, int y);                     ///< Установка сооружения
     bool checkWay(int x, int y) const;                                      ///< Проверка наличия пути от логова до замка
 
-    int updateSituation(int time);                                          ///< Обновление ситуации
-    int updateEnemiesPosition();
+    int updateSituation(int time, std::vector<int>& c);                                          ///< Обновление ситуации
+    int updateEnemiesPosition(std::vector<int>& c);
     std::vector<Enemy *> findEnemiesInTheArea(int x, int y, int r);         ///< Поиск врагов в зоне
     bool findRoad(int &x, int &y, int &direction) const;                    ///< Поиск клетки для хода врага
     int getTypeOfBuilding(int x, int y) const;

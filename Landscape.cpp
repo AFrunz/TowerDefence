@@ -92,7 +92,7 @@ bool Landscape::findRoad(int& x, int& y, int& direction) const {
 
 
 
-int Landscape::updateSituation(int time){
+int Landscape::updateSituation(int time, std::vector<int>& c){
     Castle* castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
 
     bool hasEnemiesInLayers = false;
@@ -134,6 +134,10 @@ int Landscape::updateSituation(int time){
                         trap->hit(enemy);
                         if (enemy->getCurrentHp() <= 0) castle->increaseGold(*enemy);
                     }
+                    delete trap;
+                    c.push_back(x);
+                    c.push_back(y);
+                    table[x][y].building = nullptr;
                 }
                 else {
                     enemy->move(x, y, direction, fieldSize);
@@ -163,7 +167,7 @@ int Landscape::updateSituation(int time){
 
 
 // Движение дискретное, нет учета зелий
-int Landscape::updateEnemiesPosition(){
+int Landscape::updateEnemiesPosition(std::vector<int>& c){
     Castle *castle = dynamic_cast<Castle*>(table[xCastle][yCastle].building);
     auto enemyIter = enemies.begin();
     while (enemyIter != enemies.end()){
@@ -188,6 +192,8 @@ int Landscape::updateEnemiesPosition(){
 //                    if (it->getCurrentHp() <= 0) castle->increaseGold(*it);
                 }
                 delete trap;
+                c.push_back(x);
+                c.push_back(y);
                 table[x][y].building = nullptr;
             }
             (*enemyIter)->move(x, y, direction, fieldSize);

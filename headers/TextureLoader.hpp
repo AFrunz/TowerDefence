@@ -4,6 +4,7 @@
 #include "settings.h"
 #include <SFML/Graphics.hpp>
 #include "Landscape.hpp"
+#include <cmath>
 
 class TextureLoader{
 private:
@@ -26,7 +27,41 @@ public:
         sprite.setScale(scaleX, scaleY);
         sprite.setTexture(textures["background"]);
         sprites.push_front(sprite);
-//        window->draw(sprite);
+        window->draw(sprite);
+    }
+
+    void deleteTrapSprite(int x, int y, int size){
+        for (auto sprite = std::prev(sprites.end()); sprite != sprites.begin(); sprite--){
+            std:: cout << sprite->getPosition().x << "\n" << sprite->getPosition().y << "\n";
+            int tX = round((sprite->getPosition().x - MAP_OFFSET_X) / (MAP_SIZE / size));
+            int tY = round((sprite->getPosition().y - MAP_OFFSET_Y) / (MAP_SIZE / size));
+            if (y == tX && x == tY){
+                sprites.erase(sprite);
+                return;
+            }
+        }
+    }
+
+    void addInterfaceTexture(){
+        sf::Sprite sprite;
+        sf::Texture interfaceTexture;
+        interfaceTexture.loadFromFile("bin/content/textures/Interface1.png");
+        textures["interface"] = interfaceTexture;
+        float scaleX = (WINDOW_WIDTH / 2) / interfaceTexture.getSize().x;
+        float scaleY = (WINDOW_HEIGHT / 3 * 2) / interfaceTexture.getSize().y;
+        std::cout << interfaceTexture.getSize().x << interfaceTexture.getSize().y << scaleX << scaleY;
+        sprite.setScale(scaleX, scaleY);
+        sprite.setTexture(textures["interface"]);
+        sprite.setPosition(INTERFACE_OFFSET_X, INTERFACE_OFFSET_Y);
+        sprites.push_back(sprite);
+    }
+    void addTimer(){
+        sf::Font font;
+        font.loadFromFile("bin/content/fonts/arialmt.ttf");
+        sf::Text timer("Время: ", font, 20);
+        timer.setFillColor(sf::Color::Black);
+        timer.setPosition(TIMER_OFFSET_X, TIMER_OFFSET_Y);
+        window->draw(timer);
     }
     sf::Sprite addForestTexture(int x, int y, int size){
         sf::Sprite forestSprite;
@@ -113,12 +148,12 @@ public:
         sf::Sprite towerSprite;
         sf::Texture towerTexture;
         if (type == 1){
-            towerTexture.loadFromFile("bin/content/textures/BaseTower.jpg");
+            towerTexture.loadFromFile("bin/content/textures/BaseTower.png");
             textures["baseTower"] = towerTexture;
-            towerSprite.setTexture(textures["BaseTower"]);
+            towerSprite.setTexture(textures["baseTower"]);
         }
         else {
-            towerTexture.loadFromFile("bin/content/textures/MagicTower.jpg");
+            towerTexture.loadFromFile("bin/content/textures/MagicTower.png");
             textures["magicTower"] = towerTexture;
             towerSprite.setTexture(textures["magicTower"]);
         }
@@ -129,13 +164,14 @@ public:
         int newY = MAP_OFFSET_Y + y * (MAP_SIZE / size);
         towerSprite.setPosition(newX, newY);
         sprites.push_back(towerSprite);
-//        window.draw(forestSprite);
+        std::cout << "TowerTexture\n" << newX << std::endl << newY << "ed\n";
+        window->draw(towerSprite);
         return towerSprite;
     }
     sf::Sprite addTrapTexture(int x, int y, int size){
         sf::Sprite trapSprite;
         sf::Texture trapTexture;
-        trapTexture.loadFromFile("bin/content/textures/Trap.jpg");
+        trapTexture.loadFromFile("bin/content/textures/Trap.png");
         textures["trap"] = trapTexture;
         trapSprite.setTexture(textures["trap"]);
         float scaleX = (MAP_SIZE / size) / trapTexture.getSize().x;
@@ -150,6 +186,10 @@ public:
     }
     void mapTextureInitial(Landscape& landscape){
         sf::Sprite sprite;
+        addInterfaceTexture();
+//        addTimer();
+
+
         for (auto it = landscape.begin(); it != landscape.end(); it++){
             if ((*it).type == forest){
                 if ((*it).building){
@@ -175,13 +215,36 @@ public:
         }
     }
 
-    void mapTextureDraw(){
-        sf::RectangleShape borderOfMap(sf::Vector2f(MAP_SIZE, MAP_SIZE));
-        borderOfMap.move(MAP_OFFSET_X, MAP_OFFSET_Y);
-        borderOfMap.setFillColor(sf::Color::Green);
-        for (auto sprite : sprites){
-            window->draw(sprite);
+    void mapTextureDraw() {
+        backgroundTextureDraw();
+        for (auto sprite = sprites.begin(); sprite != sprites.end(); sprite++){
+            window->draw(*sprite);
         }
+// Timer
+
+    }
+
+    void infoDraw(int currentTime, int castleGold, int castleHP){
+        sf::Font font;
+        font.loadFromFile("bin/content/fonts/arialmt.ttf");
+        sf::Text timer("Time: " + std::to_string(currentTime), font, 40);
+        timer.setFillColor(sf::Color::Black);
+        timer.setPosition(TIMER_OFFSET_X, TIMER_OFFSET_Y);
+        window->draw(timer);
+
+// CastleGold
+
+        sf::Text castleG("Gold: " + std::to_string(castleGold), font, 40);
+        castleG.setFillColor(sf::Color::Black);
+        castleG.setPosition(GOLD_OFFSET_X, GOLD_OFFSET_Y);
+        window->draw(castleG);
+// Castle health
+
+        sf::Text castleHealth("Castle health: " + std::to_string(castleHP), font, 40);
+        castleHealth.setFillColor(sf::Color::Black);
+        castleHealth.setPosition(HEALTH_OFFSET_X, HEALTH_OFFSET_Y);
+        window->draw(castleHealth);
+
     }
 
 };

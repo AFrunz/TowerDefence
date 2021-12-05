@@ -125,6 +125,7 @@ public:
         tl.mapTextureInitial(landscape);
         tl.backgroundTextureDraw();
         tl.mapTextureDraw();
+        tl.infoDraw(0, landscape.getCastleGold(), landscape.getCastleHealth());
     }
 
 /// Создание лога
@@ -134,22 +135,28 @@ public:
     }
 
 /// Начало игры
-/// Доработать setTimeout
-    int startGame(){
-        int status = 1;
-        while (status != 0){
-            landscape.updateEnemiesPosition();
-            status = landscape.updateSituation(timer.getTimeInUnits());
-            timer.setTimeout(0);
-        }
-        return status;
-    }
+///// Доработать setTimeout
+//    int startGame(){
+//        int status = 1;
+//        while (status != 0){
+//            landscape.updateEnemiesPosition(tl);
+//            status = landscape.updateSituation(timer.getTimeInUnits(), tl);
+//            timer.setTimeout(0);
+//        }
+//        return status;
+//    }
 
     int oneIter(){
         tl.mapTextureDraw();
-        int status2 = landscape.updateEnemiesPosition();
-        int status1 = landscape.updateSituation(timer.getTimeInUnits());
+        std::vector<int> c;
+        int status2 = landscape.updateEnemiesPosition(c);
+        int status1 = landscape.updateSituation(timer.getTimeInUnits(), c);
+        for (int i = 0; i < c.size(); i += 2){
+            tl.deleteTrapSprite(c[i], c[i + 1], landscape.getFieldSize());
+        }
+
         timer.setTimeout(0);
+        tl.infoDraw(timer.getTimeInUnits(), landscape.getCastleGold(), landscape.getCastleHealth());
         return !(status1 * status2);
     }
 
@@ -158,6 +165,9 @@ public:
             Tower* tower = new BaseTower;
             landscape.setBuilding(tower, y, x);
             landscape.decreaseCastleGold(BaseTower::getPrice(0));
+            tl.addTowerTexture(x, y, landscape.getFieldSize(), 1);
+            tl.mapTextureDraw();
+            tl.infoDraw(timer.getTimeInUnits(), landscape.getCastleGold(), landscape.getCastleHealth());
         }
     }
 
@@ -170,6 +180,9 @@ public:
             Trap* trap = new Trap(type);
             landscape.setBuilding(trap, y, x);
             landscape.decreaseCastleGold(TRAP_PRICE);
+            tl.addTrapTexture(x, y, landscape.getFieldSize());
+            tl.mapTextureDraw();
+            tl.infoDraw(timer.getTimeInUnits(), landscape.getCastleGold(), landscape.getCastleHealth());
         }
     }
 
@@ -178,6 +191,9 @@ public:
             Tower* tower = new MagicTower(type);
             landscape.setBuilding(tower, y, x);
             landscape.decreaseCastleGold(MagicTower::getPrice(0));
+            tl.addTowerTexture(x, y, landscape.getFieldSize(), 2);
+            tl.mapTextureDraw();
+            tl.infoDraw(timer.getTimeInUnits(), landscape.getCastleGold(), landscape.getCastleHealth());
         }
     }
 
@@ -223,6 +239,10 @@ public:
         }
 
 
+    }
+
+    int getSize(){
+        return landscape.getFieldSize();
     }
 
 };
