@@ -23,11 +23,8 @@ int main(){
     double timeStart = clock();
 //    std::string dialogOptions = {"0. Quit\n1. Do iter\n2. Add Tower\n3. Add magic tower\n4. Upgrade Tower\n5. Add trap\n"};
 
-
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 1;
 //  Инициализация окна
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "TowerDefence", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "TowerDefence");
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
 // Загрузка карты

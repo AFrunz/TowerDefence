@@ -23,7 +23,7 @@ public:
         textures["background"] = backgroundTexture;
         float scaleX = (WINDOW_WIDTH) / backgroundTexture.getSize().x;
         float scaleY = (WINDOW_HEIGHT) / backgroundTexture.getSize().y;
-        std::cout << backgroundTexture.getSize().x << backgroundTexture.getSize().y << scaleX << scaleY;
+//        std::cout << backgroundTexture.getSize().x << backgroundTexture.getSize().y << scaleX << scaleY;
         sprite.setScale(scaleX, scaleY);
         sprite.setTexture(textures["background"]);
         sprites.push_front(sprite);
@@ -32,7 +32,7 @@ public:
 
     void deleteTrapSprite(int x, int y, int size){
         for (auto sprite = std::prev(sprites.end()); sprite != sprites.begin(); sprite--){
-            std:: cout << sprite->getPosition().x << "\n" << sprite->getPosition().y << "\n";
+//            std:: cout << sprite->getPosition().x << "\n" << sprite->getPosition().y << "\n";
             int tX = round((sprite->getPosition().x - MAP_OFFSET_X) / (MAP_SIZE / size));
             int tY = round((sprite->getPosition().y - MAP_OFFSET_Y) / (MAP_SIZE / size));
             if (y == tX && x == tY){
@@ -49,7 +49,7 @@ public:
         textures["interface"] = interfaceTexture;
         float scaleX = (WINDOW_WIDTH / 2) / interfaceTexture.getSize().x;
         float scaleY = (WINDOW_HEIGHT / 3 * 2) / interfaceTexture.getSize().y;
-        std::cout << interfaceTexture.getSize().x << interfaceTexture.getSize().y << scaleX << scaleY;
+//        std::cout << interfaceTexture.getSize().x << interfaceTexture.getSize().y << scaleX << scaleY;
         sprite.setScale(scaleX, scaleY);
         sprite.setTexture(textures["interface"]);
         sprite.setPosition(INTERFACE_OFFSET_X, INTERFACE_OFFSET_Y);
@@ -164,7 +164,7 @@ public:
         int newY = MAP_OFFSET_Y + y * (MAP_SIZE / size);
         towerSprite.setPosition(newX, newY);
         sprites.push_back(towerSprite);
-        std::cout << "TowerTexture\n" << newX << std::endl << newY << "ed\n";
+//        std::cout << "TowerTexture\n" << newX << std::endl << newY << "ed\n";
         window->draw(towerSprite);
         return towerSprite;
     }
