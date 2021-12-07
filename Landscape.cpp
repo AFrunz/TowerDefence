@@ -128,7 +128,7 @@ int Landscape::updateSituation(int time, std::vector<int>& c){
                     dynamic_cast<Castle*>(table[x][y].building)->damage(*enemy);
                 }
                 else if (table[x][y].building && table[x][y].building->getType() == trap_){
-                    Trap* trap = dynamic_cast<Trap*>(table[i][j].building);
+                    Trap* trap = dynamic_cast<Trap*>(table[x][y].building);
                     std::vector<Enemy*> enemiesInArea = findEnemiesInTheArea(i, j, trap->getArea());
                     for (auto enemyIter : enemiesInArea){
                         trap->hit(enemy);
@@ -138,6 +138,8 @@ int Landscape::updateSituation(int time, std::vector<int>& c){
                     c.push_back(x);
                     c.push_back(y);
                     table[x][y].building = nullptr;
+                    enemy->move(x, y, direction, fieldSize);
+                    enemies.push_back(enemy);
                 }
                 else {
                     enemy->move(x, y, direction, fieldSize);
@@ -288,7 +290,8 @@ void Landscape::decreaseCastleGold(int gold){
 }
 
 int Landscape::towerUp(int x, int y) {
-    if (!table[x][y].building) return EROR;
+    if (x < 0 || x >= fieldSize || y < 0 || y >= fieldSize) throw std::runtime_error("Wrong coordinates\n");
+    if (!table[x][y].building) throw std::runtime_error("Building not found\n");
     if (table[x][y].building->getType() == tower_){
         Tower* tower = dynamic_cast<Tower*>(table[x][y].building);
         if (tower->getTowerType() == basic_ && getCastleGold() >= BaseTower::getPrice(tower->getLvl())){
@@ -299,9 +302,9 @@ int Landscape::towerUp(int x, int y) {
             int result = tower->lvlUp();
             if (!result) decreaseCastleGold(BaseTower::getPrice(tower->getLvl() + 1));
         }
-        else return NOT_ENOUGH_MONEY;
+        else throw std::runtime_error("Not enough money\n");
     }
-    else return EROR;
+    else throw std::runtime_error("There is no tower here\n");
     return ST_OK;
 }
 

@@ -173,6 +173,8 @@ public:
 
     void towerUp(int x, int y){
         int status = landscape.towerUp(y, x);
+        tl.mapTextureDraw();
+        tl.infoDraw(timer.getTimeInUnits(), landscape.getCastleGold(), landscape.getCastleHealth());
     }
 
     void addTrap(int x, int y, int type){

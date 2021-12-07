@@ -50,7 +50,10 @@ int main(){
                     switch (event.key.code){
                         case sf::Keyboard::Enter: {
                             int status = td.oneIter();
-                            if (!status) window.close();
+                            if (!status) {
+                                window.close();
+                                // Вывод в консоль статуса
+                            }
                             break;
                         }
                         case sf::Keyboard::B: {
@@ -60,7 +63,14 @@ int main(){
                             }
                             x = (event.mouseButton.x - MAP_OFFSET_X) / (MAP_SIZE / td.getSize());
                             y = (event.mouseButton.y - MAP_OFFSET_Y) / (MAP_SIZE / td.getSize());
-                            td.addBaseTower(x, y);
+                            try{
+                                td.addBaseTower(x, y);
+                            }
+
+                            catch(std::runtime_error& error){
+                                std::cout << error.what() << std::endl;
+                            }
+
                             break;
                         }
                         case sf::Keyboard::M:{
@@ -90,7 +100,12 @@ int main(){
                             }
                             x = (event.mouseButton.x - MAP_OFFSET_X) / (MAP_SIZE / td.getSize());
                             y = (event.mouseButton.y - MAP_OFFSET_Y) / (MAP_SIZE / td.getSize());
-                            td.addMagicTower(x, y, type);
+                            try{
+                                td.addMagicTower(x, y, type);
+                            }
+                            catch (std::runtime_error& error){
+                                std::cout << error.what() << std::endl;
+                            }
                             break;
                         }
                         case sf::Keyboard::T:{
@@ -120,23 +135,29 @@ int main(){
                             }
                             x = (event.mouseButton.x - MAP_OFFSET_X) / (MAP_SIZE / td.getSize());
                             y = (event.mouseButton.y - MAP_OFFSET_Y) / (MAP_SIZE / td.getSize());
-                            td.addTrap(x, y, type);
+                            try{
+                                td.addTrap(x, y, type);
+                            }
+                            catch(std::runtime_error& error){
+                                std::cout << error.what() << std::endl;
+                            }
                         }
                      break;
              }
                     break;
+
                 case sf::Event::MouseButtonPressed:{
                     int x = (event.mouseButton.x - MAP_OFFSET_X) / (MAP_SIZE / td.getSize());
                     int y = (event.mouseButton.y - MAP_OFFSET_Y) / (MAP_SIZE / td.getSize());
-                    td.towerUp(x, y);
+                    try{
+                        td.towerUp(x, y);
+                    }
+                    catch(std::runtime_error& error){
+                        std::cout << error.what() << std::endl;
+                    }
                 }
         }
-//
-//            if (event.type == sf::Event::MouseButtonPressed){
-//                int status = td.oneIter();
-//                if (!status) window.close();
-//                std::cout << "Iter\n";
-//            }
+
 
             window.display();
         }
